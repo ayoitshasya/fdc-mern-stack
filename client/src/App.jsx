@@ -1,5 +1,6 @@
 import React from 'react'
-import Signup from './pages/Login'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 import Home from './pages/Home'
 
 function App() {
@@ -7,10 +8,13 @@ function App() {
 
   return (
     <>
-      <div  className='h-10 bg-[#B7202E] w-full fixed z-10 top-0'></div>
-      <div className='bg-[url(/campus.jpg)] bg-cover h-screen w-screen flex justify-center items-center'>
-          <Home/>
+    <div className='h-screen flex flex-col'>
+      <div  className='h-10 bg-[#B7202E] w-full z-10 top-0'></div>
+      <div className='bg-[url(/campus.jpg)] bg-cover w-screen flex justify-center items-center flex-1'>
+          <Signup/>
       </div>
+    </div>
+      
     </>
   )
 }

@@ -15,13 +15,13 @@ function Login() {
             <button className='min-w-[60%] rounded-4xl bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200'>Sign In</button>
            
             <span className='text-[#797979]'>OR</span>
-            <button className='flex items-center gap-2 text-[#797979] border border-[#777777] text-[1rem] rounded-4xl py-2 px-4'>
+            <button className='flex items-center gap-2 text-[#797979] border border-[#777777] text-[1rem] rounded-4xl py-2 px-4 cursor-pointer'>
               <img src="/google.png" className='h-5' /> Sign In Using Google Account
             </button>
 
             
         </div>
-        <p className='text-[#797979] font-inter font-medium text-[1.1rem] mb-1'>New to FDC Application? <span className='text-[#B7202E]'>Signup Here</span></p>
+        <p className='text-[#797979] font-inter font-medium text-[1.1rem] mb-1'>New to FDC Application? <span className='text-[#B7202E] cursor-pointer hover:underline'>Signup Here</span></p>
     </div>
   )
 }
