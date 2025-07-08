@@ -2,7 +2,8 @@ import React from 'react'
 
 function Login() {
   return (
-    <div className='min-w-7/10  bg-[#FAFAFA] rounded-4xl p-6 flex flex-col items-center'>
+    <div className='flex justify-center items-center h-full w-full'>
+      <div className='min-w-7/10  bg-[#FAFAFA] rounded-4xl p-6 flex flex-col items-center'>
         <img src="/university-logo.svg" className='h-12 self-start'/>
         <div className='w-full flex-1 flex flex-col  items-center font-inter gap-4 tracking-wide font-medium mt-5 mb-10'>
 
@@ -22,7 +23,9 @@ function Login() {
             
         </div>
         <p className='text-[#797979] font-inter font-medium text-[1.1rem] mb-1'>New to FDC Application? <span className='text-[#B7202E] cursor-pointer hover:underline'>Signup Here</span></p>
+      </div>
     </div>
+    
   )
 }
 
