@@ -24,14 +24,14 @@ router.post("/register", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.create({ fname, lname, e_id, email, password: hashedPassword,department, designation, date_of_appointment, present_appointment, user_type });
+    await User.create({ fname, lname, e_id, email, password: hashedPassword, department, designation, date_of_appointment, present_appointment, user_type });
     res.json({ message: "User registered successfully" });
 
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-  
+
 });
 
 
@@ -45,45 +45,51 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ e_id: user.e_id,  user_type: user.user_type}, process.env.SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign({ e_id: user.e_id, user_type: user.user_type }, process.env.SECRET_KEY, { expiresIn: "1h" });
 
-
-
+    // Set the token in a cookie
+    // Note: In production, set secure to true if using HTTPS
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       sameSite: "lax",
-      maxAge: 3600000 
+      maxAge: 3600000
     });
 
-    res.status(200).json({ message: "Login successful", user:{e_id, user_type: user.user_type} });
+    res.status(200).json({ message: "Login successful", user: { e_id, user_type: user.user_type } });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-  
+
 });
 
 
-router.get("/profile", authenticateToken ,async (req, res) => {
+router.get("/profile", authenticateToken, async (req, res) => {
   const e_id = req.user.e_id;
-  
-  const userData = await User.findOne({e_id});
+
+  const userData = await User.findOne({ e_id });
   if (!userData) return res.status(404).json({ message: "User Not Found." });
-  const{fname, lname, email, department, designation, user_type } = userData;
-  res.json({fname, lname, email, department, designation, e_id: userData.e_id, user_type });
+  const { fname, lname, email, department, designation, user_type, profilePicture } = userData;
+  res.json({ fname, lname, email, department, designation, e_id: userData.e_id, user_type, profilePicture });
 
 })
 
-
-
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false, // true if you're using HTTPS
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+});
 
 
 // Set up Google OAuth2 credentials
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  "https://developers.google.com/oauthplayground"
+  "http://localhost:4000/auth/google/callback"
 );
 
 oauth2Client.setCredentials({
@@ -100,6 +106,54 @@ async function getAccessToken() {
     throw error;
   }
 }
+
+router.get("/google-login", (req, res) => {
+  const redirectUrl = oauth2Client.generateAuthUrl({
+    access_type: "offline",
+    prompt: "consent",
+    scope: ["profile", "email"],
+  });
+  res.redirect(redirectUrl);
+});
+
+router.get("/google/callback", async (req, res) => {
+  const { code } = req.query;
+  const { tokens } = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+
+  const ticket = await oauth2Client.verifyIdToken({
+    idToken: tokens.id_token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+  const email = payload.email;
+    const picture = payload.picture;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(401).send("No account associated with this Google account.");
+  }
+
+  // Save profile picture to DB if not already saved or changed
+  if (!user.profilePicture || user.profilePicture !== picture) {
+    user.profilePicture = picture;
+    await user.save();
+  }
+
+  // Set a token cookie
+  const token = jwt.sign({ e_id: user.e_id, user_type: user.user_type }, process.env.SECRET_KEY, { expiresIn: "1h" });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    maxAge: 3600000
+  });
+
+  // Redirect to frontend home page
+  res.redirect("http://localhost:5173/home");
+});
+
 
 // Nodemailer transporter using Google OAuth2
 const transporter = nodemailer.createTransport({
