@@ -1,13 +1,21 @@
 import mongoose, { Schema } from "mongoose";
 
 const applicationSchema = new Schema({
-    application_id:{
-        type:Number,
-        unique: true,
+    e_id:{
+        type: mongoose.Types.ObjectId,
+        ref: "User",
         required: true
     },
-    e_id:{
+    department:{
         type: String,
+        required: true
+    },
+    date_of_appointment:{
+        type: Date,
+        required: true
+    },
+    present_appointment:{
+        type: Date,
         required: true
     },
     purpose:{
@@ -106,6 +114,12 @@ const applicationSchema = new Schema({
     },
     od_sanctioned:{
         type:Number,
+    },
+    status:{
+        type: String,
+        enum: ["pending", "approved-by-hod", "approved-by-convenor", "approved-by-principal", "rejected-by-hod", "rejected-by-convenor", "rejected-by-principal"],
+        required: true,
+        default: "pending"
     }
 
 

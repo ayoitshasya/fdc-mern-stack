@@ -11,7 +11,7 @@ const authenticateToken = (req, res, next) => {
       return res.status(403).json({ message: "Forbidden: Token invalid" });
     }
 
-    req.user = decoded; // ⬅️ Attach decoded payload to request
+    req.user = decoded; 
     next();
   });
 };
