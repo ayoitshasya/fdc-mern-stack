@@ -2,7 +2,10 @@ import cors from "cors";
 import express from "express";
 import dotenv from 'dotenv';
 import authRouter from "./routes/authRoutes.js";
+import applicationRouter from "./routes/applicationRoutes.js";
 import cookieParser from "cookie-parser";
+
+
 dotenv.config({
   path: "./.env"
 })
@@ -19,7 +22,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRouter)
-
+app.use('/application', applicationRouter)
 
 
 connectDB();
