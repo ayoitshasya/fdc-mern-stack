@@ -1,14 +1,16 @@
 import mongoose, { Schema } from "mongoose";
 
 const reimbursementSchema = new Schema({
+    submitted_by:{
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     application_id:{
-        type: Number,
+        type: mongoose.Types.ObjectId,
+        ref: 'Application',
         unique: true,
         required: true,
-    },
-    e_id: {
-        type: String,
-        required: true
     },
     registration_amount:{
         type: Number,

@@ -1,21 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const applicationSchema = new Schema({
-    e_id:{
+    submitted_by:{
         type: mongoose.Types.ObjectId,
         ref: "User",
-        required: true
-    },
-    department:{
-        type: String,
-        required: true
-    },
-    date_of_appointment:{
-        type: Date,
-        required: true
-    },
-    present_appointment:{
-        type: Date,
         required: true
     },
     purpose:{
@@ -90,10 +78,6 @@ const applicationSchema = new Schema({
         type:String,
         required:true
     },
-    status:{
-        type:String,
-        required:true
-    },
     HOD_recommendation:{
         type:String,
     },
@@ -108,9 +92,6 @@ const applicationSchema = new Schema({
     },
     amount_sanctioned:{
         type:Number,
-    },
-    designation:{
-        type:String,
     },
     od_sanctioned:{
         type:Number,
