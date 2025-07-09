@@ -106,4 +106,56 @@ router.post(
   }
 );
 
+
+router.get("/fetch-applications", authenticateToken, async(req, res) => {
+    try {
+        const userType = req.user.user_type;
+        const e_id = req.user.e_id;
+        if(userType == "employee"){
+            const currentUser = await userModel.findOne({ e_id });
+
+            if (!currentUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+        
+            const applications = await applicationModel.find({ submitted_by: currentUser._id });
+            return res.status(200).json({ applications });
+        }
+
+        else if(userType == "hod"){
+            const currentUser = await userModel.findOne({ e_id });
+            if (!currentUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            const applications = await applicationModel.find({
+                status: { $in: ["pending", "rejected-by-hod"] }
+            })
+            .populate("submitted_by") // populate to access department
+            .then(apps =>
+                apps.filter(app => app.submitted_by.department === currentUser.department)
+            );
+            return res.status(200).json({ applications });
+        }
+        else if(userType == "fdc-convenor"){
+
+            const applications = await applicationModel.find({
+                status: { $in: ["approved-by-hod", "rejected-by-convenor"] }
+            });
+            
+            return res.status(200).json({ applications });
+        }
+        else if(userType == "principal"){
+            const applications = await applicationModel.find({
+                status: { $in: ["approved-by-convenor", "rejected-by-principal"] }
+            });
+            
+            return res.status(200).json({ applications });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({message: "Server Error Occured."})
+    }
+});
+
 export default router;
