@@ -22,7 +22,6 @@ function Header() {
 
     fetchProfile();
   }, [navigate]);
-  console.log(user);
 
   const handleLogout = async () => {
     try {
@@ -34,7 +33,7 @@ function Header() {
   };
 
   return (
-    <div className="w-full bg-white py-2 px-8 flex justify-between items-center">
+    <div className="w-full bg-white py-2 px-8 flex justify-between items-center sticky z-10 top-0">
       <div className="h-full flex items-center gap-8">
         <img src="/mini-logo.png" className="h-14" />
         <h1 className="font-inter font-light text-lg">
