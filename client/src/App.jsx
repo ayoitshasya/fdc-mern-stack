@@ -22,9 +22,9 @@ function App() {
           <Route path="/" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/application/1" element={<Application1 />} />
-          <Route path="/application/2" element={<Application2 />} />
-          <Route path="/application/3" element={<Application3 />} />
+          <Route path="/fdc-application/step-1" element={<Application1 />} />
+          <Route path="/fdc-application/step-2" element={<Application2 />} />
+          <Route path="/fdc-application/step-3" element={<Application3 />} />
           <Route path="/application/Status" element={<ApplicationStatus />} />
           <Route path="/application/HOD" element={<ApplicationHOD />} />
           <Route path="/application/Principal" element={<ApplicationPrincipal />} />

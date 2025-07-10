@@ -37,7 +37,7 @@ const deleteFile = async (filePath) => {
 };
 
 router.post(
-  "/application-form",
+  "/submit-form",
   authenticateToken,
   upload.fields([
     { name: "load_adjustment_file", maxCount: 1 },

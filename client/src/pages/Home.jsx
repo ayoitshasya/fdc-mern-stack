@@ -1,7 +1,10 @@
 import React from 'react'
 import Header from '../Components/Header'
+import { useNavigate } from 'react-router-dom'
 
 function Home() {
+  const navigate = useNavigate();
+  
   return (
     <div className='w-full h-full flex flex-col'>
       <Header/>
@@ -10,7 +13,7 @@ function Home() {
           <h1 className='text-6xl text-center mb-4 '>Welcome to the</h1>
           <h1 className='text-6xl text-center mb-14 tracking-wide'>FDC Application</h1>
           <div className='flex w-full justify-center gap-4 text-xl'>
-              <button className='w-[38%] rounded-4xl bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200'>Application for FDC</button>
+              <button onClick={() => navigate("/fdc-application/step-1")} className='w-[38%] rounded-4xl bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200'>Application for FDC</button>
               <button className='w-[38%] rounded-4xl border border-[#B7202E] text-[#B7202E] p-3 font-semibold cursor-pointer hover:text-[#d23646] duration-200'>FDC Reimbursement Form</button>
           </div>
         </div>

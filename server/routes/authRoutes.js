@@ -70,8 +70,8 @@ router.get("/profile", authenticateToken, async (req, res) => {
 
   const userData = await User.findOne({ e_id });
   if (!userData) return res.status(404).json({ message: "User Not Found." });
-  const { fname, lname, email, department, designation, user_type, profilePicture } = userData;
-  res.json({ fname, lname, email, department, designation, e_id: userData.e_id, user_type, profilePicture });
+  const { fname, lname, email, department, designation, date_of_appointment, present_appointment, user_type, profilePicture } = userData;
+  res.json({ fname, lname, email, department, designation, date_of_appointment, present_appointment, e_id: userData.e_id, user_type, profilePicture });
 
 })
 

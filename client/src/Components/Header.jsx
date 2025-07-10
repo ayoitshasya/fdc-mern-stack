@@ -22,7 +22,6 @@ function Header() {
 
     fetchProfile();
   }, [navigate]);
-  console.log(user);
 
   const handleLogout = async () => {
     try {
