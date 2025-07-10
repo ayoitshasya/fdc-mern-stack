@@ -3,6 +3,9 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Home from './pages/Home'
 import Application1 from './pages/Application/Application1'
+import Application2 from './pages/Application/Application2'
+import Application3 from './pages/Application/Application3'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
   async function handleLogin(e){
@@ -51,20 +54,14 @@ function App() {
     <div className='h-screen flex flex-col'>
       <div  className='h-6 bg-[#B7202E] w-full z-10 top-0'></div>
       <div className='bg-[url(/campus.jpg)] bg-cover w-screen flex-1'>
-
-
-        <Application1/>
-
-          {/* <form action="" className='bg-white flex flex-col w-1/2 p-4'>
-            <input type="text" className='border p-2' placeholder='Employee id' value={employeeId} onChange={(e)=>{setEmployeeId(e.target.value);}}/>
-            <input type="password" className='border p-2' placeholder='Password' value={password} onChange={(e)=>{setPassword(e.target.value);}}/>
-            <button className='border p-2' onClick={handleLogin}>Login</button>
-          </form>
-
-          <button className='border p-2' onClick={getProfile}>Profile</button> */}
-      
-
-          
+        { <Routes>
+          <Route path="/" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/application" element={<Application1 />} />
+          <Route path="/application" element={<Application2 />} />
+          <Route path="/application" element={<Application3 />} />
+        </Routes> }
       </div>
     </div>
       

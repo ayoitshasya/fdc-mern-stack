@@ -22,10 +22,10 @@ function Application1() {
             <input type="text" name='designation' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
 
             <label htmlFor="date_of_appointment">Date of Appointment: *</label>
-            <input type="text" name='date_of_appointment' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
+            <input type="date" name='date_of_appointment' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
 
             <label htmlFor="date_of_appointment_present">Date of Appointment on the present post: *</label>
-            <input type="text" name='date_of_appointment_present' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
+            <input type="date" name='date_of_appointment_present' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
             
             <p className='font-medium text-[#666666]'>Check above details and click next to proceed further</p>
             <div className='flex items-center mb-4'>
