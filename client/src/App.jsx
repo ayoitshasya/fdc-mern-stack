@@ -9,6 +9,7 @@ import Application2 from './pages/Application/Application2'
 import Application3 from './pages/Application/Application3'
 import ApplicationHOD from './pages/Application/ApplicationHOD'
 import ApplicationPrincipal from './pages/Application/ApplicationPrincipal'
+import { useState } from 'react'
 
 function App() {
   async function handleLogin(e){
@@ -55,18 +56,18 @@ function App() {
   return (
     <>
     <div className='h-screen flex flex-col'>
-      <div  className='h-6 bg-[#B7202E] w-full z-10 top-0'></div>
-      <div className='bg-[url(/campus.jpg)] bg-cover w-screen flex-1'>
+      <div  className='h-6 bg-[#B7202E] w-full'></div>
+      <div className='bg-[url(/campus.jpg)] bg-cover w-full flex-1'>
         { <Routes>
-          <Route path="/" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/application/1" element={<Application1 />} />
-          <Route path="/application/2" element={<Application2 />} />
-          <Route path="/application/3" element={<Application3 />} />
-          <Route path="/application/Status" element={<ApplicationStatus />} />
-          <Route path="/application/HOD" element={<ApplicationHOD />} />
-          <Route path="/application/Principal" element={<ApplicationPrincipal />} />
+            <Route path="/" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/application/1" element={<Application1 />} />
+            <Route path="/application/2" element={<Application2 />} />
+            <Route path="/application/3" element={<Application3 />} />
+            <Route path="/application/Status" element={<ApplicationStatus />} />
+            <Route path="/application/HOD" element={<ApplicationHOD />} />
+            <Route path="/application/Principal" element={<ApplicationPrincipal />} />
         </Routes> }
       </div>
     </div>
