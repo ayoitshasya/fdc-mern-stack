@@ -6,6 +6,8 @@ import cloudinary from "../utils/cloudinary.js";
 import authenticateToken from "../middlewares/authenticateToken.js";
 import { applicationModel } from "../models/Application.js";
 import userModel from "../models/User.js";
+import { sendStatusMail } from "../utils/nodemailer.js";
+import { notifyNextReviewer } from "../utils/nodemailer.js";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -230,7 +232,10 @@ router.post('/application-review', authenticateToken, async(req, res) =>{
         if (!updatedApp) {
           return res.status(404).json({ message: "Application not found." });
         }
-    
+        await sendStatusMail(applicationId, finalStatus, updatedApp.submitted_by);
+        if (status === "approve") {
+          await notifyNextReviewer(userType);
+        }
         res.status(200).json({ message: `Application ${finalStatus}.`, application: updatedApp });
     
 
