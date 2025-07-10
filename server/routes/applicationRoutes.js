@@ -158,4 +158,34 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
     }
 });
 
+router.post('/application-review', async(req, res) =>{
+
+    try {
+        let approveStatus;
+        let rejectStatus;
+        const userType = req.user.user_type;
+        if(userType == "hod"){
+          approveStatus = "approved-by-hod";
+          rejectStatus = "rejected-by-hod";
+          const { HOD_recommendation, HOD_reason } = req.body;
+        }
+        else if(userType == "fdc-convenor"){
+          approveStatus = "approved-by-convenor";
+          rejectStatus = "rejected-by-convenor";
+        }
+        else if(userType == "principal"){
+          approveStatus = "approved-by-principal";
+          rejectStatus = "rejected-by-principal";
+        }else{
+          res.status(401).json({message: "User unauthorised."})
+        }
+
+        const { applicationId } = req.body;
+
+    } catch (error) {
+        console.log(error)
+        res.status(501).json({message: "Server Error."})
+    }
+})
+
 export default router;

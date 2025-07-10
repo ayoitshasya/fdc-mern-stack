@@ -4,3 +4,8 @@
 .font-inter{
   font-family: 'Inter', sans-serif;
 }
+
+input{
+  border: 1px solid;
+  border-color: black;
+}
