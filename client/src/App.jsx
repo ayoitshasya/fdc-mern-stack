@@ -3,10 +3,12 @@ import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Home from './pages/Home'
+import ApplicationStatus from './pages/Application/ApplicationStatus'
 import Application1 from './pages/Application/Application1'
 import Application2 from './pages/Application/Application2'
 import Application3 from './pages/Application/Application3'
-import ApplicationStatus from './pages/Application/ApplicationStatus'
+import ApplicationHOD from './pages/Application/ApplicationHOD'
+import ApplicationPrincipal from './pages/Application/ApplicationPrincipal'
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
           <Route path="/application/2" element={<Application2 />} />
           <Route path="/application/3" element={<Application3 />} />
           <Route path="/application/Status" element={<ApplicationStatus />} />
+          <Route path="/application/HOD" element={<ApplicationHOD />} />
+          <Route path="/application/Principal" element={<ApplicationPrincipal />} />
         </Routes> }
       </div>
     </div>
