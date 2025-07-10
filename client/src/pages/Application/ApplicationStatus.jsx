@@ -30,7 +30,7 @@ function ApplicationStatus() {
       <Header />
       <div className='bg-[url(/campus.jpg)] bg-cover w-full h-full flex flex-col items-center p-6'>
         <div className='bg-white bg-opacity-90 rounded-3xl p-6 px-10 max-w-6xl w-full shadow-md'>
-          <h1 className='text-2xl font-semibold text-center text-[#B7202E] mb-6'>Applications</h1>
+          <h1 className='text-2xl font-semibold text-center text-[#B7202E] mb-6'>Application Forms</h1>
 
           {/* Toggle Tabs */}
           <div className='flex justify-center gap-4 mb-6'>
