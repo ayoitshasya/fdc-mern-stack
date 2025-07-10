@@ -4,6 +4,12 @@ import Signup from './pages/Signup'
 import Home from './pages/Home'
 import Application1 from './pages/Application/Application1'
 import { Routes, Route } from 'react-router-dom'
+// Add these imports:
+import Reimb1 from './Reimb1';  
+import Reimb2 from './Reimb2';  
+import Reimb3 from './Reimb3';  
+import Reimb4 from './Reimb4';  
+
 
 function App() {
 
@@ -18,9 +24,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/application" element={<Application1 />} />
-          {/* Add more routes as needed */}
+          {/* Added reimbursement routes */}
+          <Route index element={<Reimb1 />} />  {/* Default to Reimb1 */}
+          <Route path="1" element={<Reimb1 />} />
+          <Route path="2" element={<Reimb2 />} />
+          <Route path="3" element={<Reimb3 />} />
+          <Route path="4" element={<Reimb4 />} />
         </Routes>
-
       </div>
     </div>
       
