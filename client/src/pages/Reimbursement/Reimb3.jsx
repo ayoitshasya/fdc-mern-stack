@@ -17,6 +17,9 @@ function Reimbursement3() {
     attachments: null
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -33,6 +36,8 @@ function Reimbursement3() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
     
     try {
       const formPayload = new FormData();
@@ -53,61 +58,81 @@ function Reimbursement3() {
       navigate('/reimbursement/4');
     } catch (err) {
       console.error("Error submitting reimbursement:", err);
+      setError('Failed to submit reimbursement. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="reimbursement-container">
+    <div className="page-container">
       <Header />
-      <div className="form-container">
+      <div className="card">
         <h2>Expense Details</h2>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Registration Amount (₹):</label>
+            <label>Registration Amount (₹)</label>
             <input
               type="number"
               name="registration_amount"
               value={formData.registration_amount}
               onChange={handleChange}
+              className="form-input"
               required
+              min="0"
+              step="0.01"
             />
           </div>
 
           <div className="form-group">
-            <label>TA Amount (₹):</label>
+            <label>TA Amount (₹)</label>
             <input
               type="number"
               name="ta_amount"
               value={formData.ta_amount}
               onChange={handleChange}
+              className="form-input"
               required
+              min="0"
+              step="0.01"
             />
           </div>
 
           <div className="form-group">
-            <label>DA Amount (₹):</label>
+            <label>DA Amount (₹)</label>
             <input
               type="number"
               name="da_amount"
               value={formData.da_amount}
               onChange={handleChange}
+              className="form-input"
               required
+              min="0"
+              step="0.01"
             />
           </div>
 
           <div className="form-group">
-            <label>Attach Receipts:</label>
+            <label>Attach Receipts (PDF/Image)</label>
             <input
               type="file"
               name="attachments"
               onChange={handleFileChange}
+              className="file-input"
+              accept=".pdf,.jpg,.jpeg,.png"
               required
             />
           </div>
 
-          <button type="submit" className="next-btn">
-            Submit Reimbursement
+          {error && <div className="error-message">{error}</div>}
+
+          <button 
+            type="submit" 
+            className="submit-btn"
+            disabled={loading}
+          >
+            {loading ? 'Submitting...' : 'Submit Reimbursement'}
           </button>
         </form>
       </div>

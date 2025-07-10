@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../../Components/Header';
 import './styles/PrincipalReimb.css';
 
-function PrincipalReimbursement() {
+function PrincipalReimb() {
   const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -105,65 +105,80 @@ function PrincipalReimbursement() {
                 type="number" 
                 value={formData.registration_amount + formData.ta_amount + formData.da_amount} 
                 readOnly
+                className="amount-input"
               /> to Mr./Ms. 
               <input 
                 type="text" 
                 value={employee ? `${employee.fname} ${employee.lname}` : ''} 
                 readOnly
+                className="name-input"
               /> for attending 
               <input 
                 type="text" 
                 value={application?.purpose || ''} 
                 readOnly
+                className="purpose-input"
               />
             </label>
           </div>
 
-          <table>
+          <table className="amount-table">
             <tbody>
               <tr>
                 <td>Registration Amount:</td>
-                <td>₹ <input 
-                  type="number" 
-                  name="registration_amount" 
-                  value={formData.registration_amount}
-                  onChange={handleChange}
-                  min="0"
-                  required
-                /></td>
+                <td>
+                  ₹ <input 
+                    type="number" 
+                    name="registration_amount" 
+                    value={formData.registration_amount}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                    className="amount-field"
+                  />
+                </td>
               </tr>
               <tr>
                 <td>TA Amount:</td>
-                <td>₹ <input 
-                  type="number" 
-                  name="ta_amount" 
-                  value={formData.ta_amount}
-                  onChange={handleChange}
-                  min="0"
-                /></td>
+                <td>
+                  ₹ <input 
+                    type="number" 
+                    name="ta_amount" 
+                    value={formData.ta_amount}
+                    onChange={handleChange}
+                    min="0"
+                    className="amount-field"
+                  />
+                </td>
               </tr>
               <tr>
                 <td>DA Amount:</td>
-                <td>₹ <input 
-                  type="number" 
-                  name="da_amount" 
-                  value={formData.da_amount}
-                  onChange={handleChange}
-                  min="0"
-                /></td>
+                <td>
+                  ₹ <input 
+                    type="number" 
+                    name="da_amount" 
+                    value={formData.da_amount}
+                    onChange={handleChange}
+                    min="0"
+                    className="amount-field"
+                  />
+                </td>
               </tr>
               <tr>
                 <td>Total Sanctioned:</td>
-                <td>₹ <input 
-                  type="number" 
-                  value={formData.registration_amount + formData.ta_amount + formData.da_amount} 
-                  readOnly
-                /></td>
+                <td>
+                  ₹ <input 
+                    type="number" 
+                    value={formData.registration_amount + formData.ta_amount + formData.da_amount} 
+                    readOnly
+                    className="total-field"
+                  />
+                </td>
               </tr>
             </tbody>
           </table>
 
-          <div className="form-group">
+          <div className="form-group date-field">
             <label>Date:<span className="asterisk">*</span></label>
             <input 
               type="date" 
@@ -175,11 +190,11 @@ function PrincipalReimbursement() {
           </div>
 
           <input type="hidden" name="application_id" value={applicationId} />
-          <button type="submit" id="button">Approve Reimbursement</button>
+          <button type="submit" className="approve-button">Approve Reimbursement</button>
         </form>
       </div>
     </div>
   );
 }
 
-export default PrincipalReimbursement;
+export default PrincipalReimb;

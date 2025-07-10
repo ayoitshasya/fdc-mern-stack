@@ -1,174 +1,163 @@
-/* General Styling */
-body {
-    font-family: 'Poppins', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white; /* Fallback color */
-    position: relative; /* Ensure the pseudo-element is positioned relative to the body */
+/* PrincipalReimb.css */
+.principal-reimbursement-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../css/Somaiya.jpg') no-repeat center center fixed;
-    background-size: cover;
-    opacity: 0.7; /* Adjust the opacity to make it lighter */
-    z-index: -1; /* Place the background behind the content */
-}
-
-/* Navbar Styling */
-.navbar {
-    background: #a31f37;
-    color: white;
-    padding: 10px 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 500;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Navbar Styling */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #a31f37;
-    color: white;
-    padding: 10px 20px;
-    width: 100%;
-    font-size: 18px;
-    font-weight: 500;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-
-.navbar-left {
-    font-size: 16px;
-    flex: 1; /* Pushes content toward the left */
-}
-
-.navbar-center {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    flex: 2; /* Ensures center alignment */
-}
-
-.navbar-right {
-    font-size: 16px;
-    margin-right: 20px; /* Adjust this value if needed */
-    flex: 1; /* Aligns right content to the right */
-    text-align: right;
-}
-
-.navbar-right a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-    border: 1px solid white;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px; 
-}
-
-.navbar-right a i {
-    font-size: 16px; /* Adjust size of the icon */
-}
-
-.navbar-right a:hover {
-    background-color: white;
-    color: #a31f37;
-}
-
-
-
-/* Card Container */
 .card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    max-width: 600px;
-    margin: 20px auto;
-    width: 90%;
-    z-index: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  max-width: 700px;
+  margin: 20px auto;
+  width: 90%;
 }
 
-/* Form Label */
-h2 {
-    font-size: 22px;
-    color: #444;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 600;
+#lab {
+  display: block;
+  font-size: 1.5rem;
+  color: #a31f37;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 600;
 }
 
-/* Form Styling */
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .form-group label {
-    display: block;
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #444;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  width: auto;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  margin: 0 5px;
+  display: inline-block;
+}
+
+input[type="number"] {
+  width: 100px;
+}
+
+input[type="date"] {
+  width: 180px;
+}
+
+input:focus {
+  border-color: #a31f37;
+  box-shadow: 0 0 0 2px rgba(163, 31, 55, 0.2);
+  outline: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+table td:first-child {
+  font-weight: 500;
+  color: #555;
+  width: 40%;
+}
+
+.asterisk {
+  color: #a31f37;
+  margin-left: 3px;
+}
+
+#button {
+  background: #a31f37;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background 0.2s;
+}
+
+#button:hover {
+  background: #8c1b2f;
+}
+
+.approval-success {
+  text-align: center;
+  padding: 40px;
+}
+
+.approval-success h2 {
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+.approval-success p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.back-button {
+  background: #a31f37;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-button:hover {
+  background: #8c1b2f;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+  
+  #lab {
+    font-size: 1.3rem;
+  }
+  
+  input[type="number"] {
+    width: 80px;
+  }
+  
+  table td {
+    padding: 8px 5px;
     font-size: 14px;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border: 1px solid #a31f37;
-    box-shadow: 0px 0px 5px rgba(163, 31, 55, 0.5);
-}
-
-.date-range {
-    display: flex;
-    gap: 10px;
-}
-
-button {
-    background: #a31f37;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    background: #881c2d;
-}
-
-/* Footer Styling */
-footer {
-    background: #333;
-    color: white;
-    padding: 10px 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    position: relative;
-    bottom: 0;
+  }
 }

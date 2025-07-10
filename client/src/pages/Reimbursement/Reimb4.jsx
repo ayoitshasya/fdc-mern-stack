@@ -11,16 +11,20 @@ function Reimbursement4() {
   };
 
   return (
-    <div className="reimbursement-container">
+    <div className="page-container">
       <Header />
-      <div className="confirmation-container">
-        <h2>Reimbursement Submitted Successfully</h2>
+      <div className="card confirmation-card">
+        <div className="success-icon">✓</div>
+        <h2 className="confirmation-title">Reimbursement Submitted Successfully</h2>
         <div className="confirmation-message">
           <p>Your reimbursement request has been submitted for approval.</p>
-          <p>You will be notified once it's processed.</p>
+          <p>You will be notified via email once it's processed.</p>
+        </div>
+        <div className="reference-number">
+          <p>Reference ID: <strong>REIMB-{Date.now().toString().slice(-6)}</strong></p>
         </div>
         <button 
-          className="dashboard-btn"
+          className="submit-btn dashboard-btn"
           onClick={handleBackToDashboard}
         >
           Back to Dashboard

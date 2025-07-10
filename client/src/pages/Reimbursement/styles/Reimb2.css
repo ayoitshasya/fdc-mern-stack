@@ -7,8 +7,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: white; /* Fallback color */
-    position: relative; /* Ensure the pseudo-element is positioned relative to the body */
+    background: white;
+    position: relative;
 }
 
 body::before {
@@ -20,20 +20,8 @@ body::before {
     height: 100%;
     background: url('../css/Somaiya.jpg') no-repeat center center fixed;
     background-size: cover;
-    opacity: 0.7; /* Adjust the opacity to make it lighter */
-    z-index: -1; /* Place the background behind the content */
-}
-
-/* Navbar Styling */
-.navbar {
-    background: #a31f37;
-    color: white;
-    padding: 10px 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 500;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    opacity: 0.7;
+    z-index: -1;
 }
 
 /* Navbar Styling */
@@ -53,20 +41,20 @@ body::before {
 
 .navbar-left {
     font-size: 16px;
-    flex: 1; /* Pushes content toward the left */
+    flex: 1;
 }
 
 .navbar-center {
     font-size: 18px;
     font-weight: bold;
     text-align: center;
-    flex: 2; /* Ensures center alignment */
+    flex: 2;
 }
 
 .navbar-right {
     font-size: 16px;
-    margin-right: 20px; /* Adjust this value if needed */
-    flex: 1; /* Aligns right content to the right */
+    margin-right: 20px;
+    flex: 1;
     text-align: right;
 }
 
@@ -79,11 +67,11 @@ body::before {
     transition: background-color 0.3s ease, color 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 5px; 
+    gap: 5px;
 }
 
 .navbar-right a i {
-    font-size: 16px; /* Adjust size of the icon */
+    font-size: 16px;
 }
 
 .navbar-right a:hover {
@@ -91,13 +79,20 @@ body::before {
     color: #a31f37;
 }
 
-
+/* Page Container */
+.page-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* Card Container */
 .card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     padding: 30px;
     max-width: 600px;
     margin: 20px auto;
@@ -105,60 +100,79 @@ body::before {
     z-index: 1;
 }
 
-/* Form Label */
+/* Form Styling */
 h2 {
     font-size: 22px;
-    color: #444;
-    margin-bottom: 20px;
+    color: #a31f37;
+    margin-bottom: 25px;
     text-align: center;
     font-weight: 600;
 }
 
-/* Form Styling */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .form-group label {
     display: block;
     font-size: 14px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: 500;
+    color: #555;
 }
 
-input, select, textarea {
+.form-input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     font-size: 14px;
+    background: white;
 }
 
-input:focus, select:focus, textarea:focus {
+.form-input:focus {
+    border-color: #a31f37;
+    box-shadow: 0 0 0 2px rgba(163, 31, 55, 0.2);
     outline: none;
-    border: 1px solid #a31f37;
-    box-shadow: 0px 0px 5px rgba(163, 31, 55, 0.5);
 }
 
-.date-range {
-    display: flex;
-    gap: 10px;
-}
-
-button {
+/* Button Styling */
+.submit-btn {
     background: #a31f37;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px;
+    border-radius: 4px;
+    padding: 12px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
     width: 100%;
+    transition: background 0.2s;
+    margin-top: 10px;
 }
 
-button:hover {
-    background: #881c2d;
+.submit-btn:hover {
+    background: #8c1b2f;
+}
+
+.submit-btn.disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Status Messages */
+.loading-spinner {
+    text-align: center;
+    padding: 30px 0;
+    color: #666;
+    font-size: 16px;
+}
+
+.error-message {
+    color: #d32f2f;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
 }
 
 /* Footer Styling */
@@ -171,4 +185,28 @@ footer {
     font-size: 14px;
     position: relative;
     bottom: 0;
+}
+
+/* Date Range Styling */
+.date-range {
+    display: flex;
+    gap: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card {
+        padding: 20px;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .navbar-left, .navbar-center, .navbar-right {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+    }
 }
