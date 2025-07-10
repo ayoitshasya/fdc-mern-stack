@@ -158,32 +158,85 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
     }
 });
 
-router.post('/application-review', async(req, res) =>{
+router.post('/application-review', authenticateToken, async(req, res) =>{
 
     try {
         let approveStatus;
         let rejectStatus;
         const userType = req.user.user_type;
+        let updateObject = {};
+
         if(userType == "hod"){
+
           approveStatus = "approved-by-hod";
           rejectStatus = "rejected-by-hod";
           const { HOD_recommendation, HOD_reason } = req.body;
+          if (!HOD_recommendation || !HOD_reason) {
+            return res.status(400).json({ message: "Missing required fields." });
+          }
+          updateObject.HOD_recommendation = HOD_recommendation;
+          updateObject.HOD_reason = HOD_reason;
+
         }
         else if(userType == "fdc-convenor"){
+
           approveStatus = "approved-by-convenor";
           rejectStatus = "rejected-by-convenor";
+          const { date_of_meeting, final_recommendation } = req.body;
+          if (!date_of_meeting || !final_recommendation) {
+            return res.status(400).json({ message: "Missing required fields." });
+          }
+          updateObject.date_of_meeting = date_of_meeting;
+          updateObject.final_recommendation = final_recommendation;
+
         }
         else if(userType == "principal"){
+
           approveStatus = "approved-by-principal";
           rejectStatus = "rejected-by-principal";
+          const { amount_sanctioned, od_sanctioned } = req.body;
+          if (amount_sanctioned == null || od_sanctioned == null) {
+            return res.status(400).json({ message: "Missing required fields." });
+          }
+          updateObject.amount_sanctioned = amount_sanctioned;
+          updateObject.od_sanctioned = od_sanctioned;
+
         }else{
-          res.status(401).json({message: "User unauthorised."})
+          return res.status(401).json({message: "User unauthorised."})
         }
 
-        const { applicationId } = req.body;
+        const { applicationId, status } = req.body;
+        if (!applicationId || !status) {
+          return res.status(400).json({ message: "Missing required fields." });
+        }
+    
+        let finalStatus;
+        if (status === "approve") {
+          finalStatus = approveStatus;
+        } else if (status === "disapprove") {
+          finalStatus = rejectStatus;
+        } else {
+          return res.status(400).json({ message: "Invalid status. Use 'approve' or 'disapprove'." });
+        }
+
+        updateObject.status = finalStatus;
+
+        const updatedApp = await applicationModel.findByIdAndUpdate(
+          applicationId,
+          { $set: updateObject },
+          { new: true }
+        );
+    
+        if (!updatedApp) {
+          return res.status(404).json({ message: "Application not found." });
+        }
+    
+        res.status(200).json({ message: `Application ${finalStatus}.`, application: updatedApp });
+    
+
 
     } catch (error) {
-        console.log(error)
+        console.log("Error in Application Review:", error)
         res.status(501).json({message: "Server Error."})
     }
 })
