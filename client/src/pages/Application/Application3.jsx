@@ -42,13 +42,13 @@ function Application3() {
             <label htmlFor="purpose">Purpose/scope for attending the STTP/Symposium/workshop/conference/seminar: *</label>
             <input type="text" name='purpose' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
             
-            <p className='font-medium text-[#666666]'>Check above details and click next to proceed further</p>
+            <p className='font-medium text-[#666666]'>Check above details and click submit</p>
             <div className='flex items-center mb-4'>
                 <span className='font-light'>I have checked the above details</span>
                 <input type="checkbox" name="checked" id="checked" className='ml-2 accent-[#B7202E]'/>
             </div>
             
-            <button className='rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer'>Next</button>
+            <button className='rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer'>Submit</button>
           </form>
         </div>
       </div>

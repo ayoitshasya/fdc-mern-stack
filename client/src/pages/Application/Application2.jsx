@@ -6,6 +6,8 @@ function Application2() {
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [numberOfDays, setNumberOfDays] = useState('');
+    const [selectedPurpose, setSelectedPurpose] = useState('');
+    const [customPurpose, setCustomPurpose] = useState('');
   
     useEffect(() => {
     if (fromDate && toDate) {
@@ -31,35 +33,43 @@ function Application2() {
           <h1 className='text-xl text-[#3D3D3D] font-medium mb-4'>Details about STTPS/Symposium/Workshop/Conference/Seminar/NPTEL Course</h1>
           <form className='w-full text-[#7F7F7F] font-normal flex flex-col'>
             <label htmlFor="purpose" className=''>Select purpose for FDC: *</label>
-            <select name="purpose" className="w-full border rounded-lg p-1 outline-none mt-1 mb-2" defaultValue="">
-                <option value="" disabled>Select option</option>
-                <option value="STTP">STTP</option>
-                <option value="Symposium">Symposium</option>
-                <option value="Workshop">Workshop</option>
-                <option value="National Conference">National Conference</option>
-                <option value="International Conference">International Conference</option>
-                <option value="NPTEL Course">NPTEL Course</option>
-                <option value="FDP">FDP</option>
-                <option value="Summit">Summit</option>
+            <select name="purpose" className="w-full border rounded-lg p-1 outline-none mt-1 mb-2" value={selectedPurpose} onChange={(e) => setSelectedPurpose(e.target.value)} >
+              <option value="" disabled>Select option</option>
+              <option value="STTP">STTP</option>
+              <option value="Symposium">Symposium</option>
+              <option value="Workshop">Workshop</option>
+              <option value="National Conference">National Conference</option>
+              <option value="International Conference">International Conference</option>
+              <option value="NPTEL Course">NPTEL Course</option>
+              <option value="FDP">FDP</option>
+              <option value="Summit">Summit</option>
+              <option value="Others">Others</option>
             </select>
 
-            <label htmlFor="name_of_organising_institution" className=''>Name and address of organising Institution: *</label>
-            <input type="text" name='name_of_organising_institution' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
+          {selectedPurpose === 'Others' && (
+            <>
+              <label htmlFor="customPurpose">Please specify the purpose: *</label>
+              <input type="text" name="customPurpose" className="w-full border rounded-lg p-1 outline-none mt-1 mb-2" value={customPurpose} onChange={(e) => setCustomPurpose(e.target.value)} placeholder="Enter your custom purpose"/>
+            </>
+          )}
+
+            <label htmlFor="org_institution" className=''>Name and address of organising Institution: *</label>
+            <input type="text" name='org_institution' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
 
             <label htmlFor="others">Other supporting organization worth mentioning (e.g., EEE/SAE etc): *</label>
             <input type="text" name='others' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
 
             <label htmlFor="date_and_duration_from">Date and duration from: *</label>
             <div className='flex gap-4 mt-1 mb-2'>
-                <input type="date" name='date_and_duration_from' className='w-full border rounded-lg p-1 outline-none' value={fromDate} onChange={(e) => setFromDate(e.target.value)} placeholder='From'/>
-                <input type="date" name='date_and_duration_to' className='w-full border rounded-lg p-1 outline-none' value={toDate} onChange={(e) => setToDate(e.target.value)} placeholder='To'/>
+                <input type="date" name='duration_from' className='w-full border rounded-lg p-1 outline-none' value={fromDate} onChange={(e) => setFromDate(e.target.value)} placeholder='From'/>
+                <input type="date" name='duration_to' className='w-full border rounded-lg p-1 outline-none' value={toDate} onChange={(e) => setToDate(e.target.value)} placeholder='To'/>
             </div>
 
-            <label htmlFor="number_of_days">Total number of days: *</label>
-            <input type="text" name='number_of_days' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2' value={numberOfDays} readOnly/>
+            <label htmlFor="total_days">Total number of days: *</label>
+            <input type="text" name='total_days' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2' value={numberOfDays} readOnly/>
 
-            <label htmlFor="last_day">Last day of registration: *</label>
-            <input type="date" name='last_day' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'y/>
+            <label htmlFor="registration_last_day">Last day of registration: *</label>
+            <input type="date" name='registration_last_day' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'y/>
 
             <label htmlFor="registration_fee">Registration Fee: *</label>
             <div className="relative mt-1 mb-2">
@@ -67,8 +77,8 @@ function Application2() {
                 <input type="number" name="registration_fee" className="w-full border rounded-lg p-1 pl-7 outline-none" min="0" step="1"/>
             </div>
             
-            <label htmlFor="vacation_non_vacation">The program is during: *</label>
-            <select name="vacation_non_vacation" className="w-full border rounded-lg p-1 outline-none mt-1 mb-2" defaultValue="">
+            <label htmlFor="vacation_period">The program is during: *</label>
+            <select name="vacation_period" className="w-full border rounded-lg p-1 outline-none mt-1 mb-2" defaultValue="">
                 <option value="" disabled>Select option</option>
                 <option value="Vacation">Vacation</option>
                 <option value="Non-vacation">Non-vacation</option>

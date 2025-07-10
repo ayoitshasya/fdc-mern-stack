@@ -59,15 +59,15 @@ function Signup() {
   return (
     <div className="flex justify-center items-center h-full w-full">
       <div className="min-w-7/10  bg-[#FAFAFA] rounded-4xl p-4 flex flex-col items-center">
-        <img src="/university-logo.svg" className="h-12 self-start" />
+        <img src="/university-logo.svg" className="h-8 self-start" />
         <form
           onSubmit={handleSubmit}
-          className="w-full flex-1 flex flex-col  items-center font-inter gap-[0.35rem] tracking-wide font-medium mt-5 mb-6"
+          className="w-full flex-1 flex flex-col  items-center font-inter gap-[0.35rem] tracking-wide font-medium mt-3 mb-3"
         >
-          <h3 className="text-4xl font-semibold text-[#3F3F3F] ">
+          <h3 className="text-[2rem] font-semibold text-[#3F3F3F] ">
             Welcome to KJSCE FDC Application
           </h3>
-          <p className="text-2xl text-[#797979] mb-4">
+          <p className="text-2xl text-[#797979] mb-2">
             Enter Details to Create an Acount
           </p>
 
@@ -77,7 +77,7 @@ function Signup() {
               name="fname"
               value={formData.fname}
               onChange={handleChange}
-              className="w-[49%] border rounded-4xl p-3 text-sm border-[#777777] outline-none pl-6 mb-2"
+              className="w-[49%] border rounded-4xl p-3 text-[0.8rem] border-[#777777] outline-none pl-6 mb-2"
               placeholder="First Name"
               required
             />
@@ -86,7 +86,7 @@ function Signup() {
               name="lname"
               value={formData.lname}
               onChange={handleChange}
-              className="w-[49%] border rounded-4xl p-3 text-sm border-[#777777] outline-none pl-6 mb-2"
+              className="w-[49%] border rounded-4xl p-3 text-[0.8rem] border-[#777777] outline-none pl-6 mb-2"
               placeholder="Last Name"
               required
             />
@@ -97,7 +97,7 @@ function Signup() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="min-w-[60%] border rounded-4xl p-3 text-sm border-[#777777] outline-none pl-6 mb-2"
+            className="min-w-[60%] border rounded-4xl p-3 text-[0.8rem] border-[#777777] outline-none pl-6 mb-2"
             placeholder="Email"
             required
           />
@@ -108,7 +108,7 @@ function Signup() {
               name="e_id"
               value={formData.e_id}
               onChange={handleChange}
-              className="w-[49%] border rounded-4xl p-3 text-sm border-[#777777] outline-none pl-6 mb-2"
+              className="w-[49%] border rounded-4xl p-3 text-[0.8rem] border-[#777777] outline-none pl-6 mb-2"
               placeholder="Employee ID"
               required
             />
@@ -117,7 +117,7 @@ function Signup() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-[49%] border rounded-4xl p-3 text-sm border-[#777777] outline-none pl-6 mb-2"
+              className="w-[49%] border rounded-4xl p-3 text-[0.8rem] border-[#777777] outline-none pl-6 mb-2"
               placeholder="Password"
               required
             />
@@ -128,7 +128,7 @@ function Signup() {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className="w-[49%] border rounded-4xl p-3 text-sm border-[#777777] text-[#777777] outline-gray-500 pl-6 mb-2"
+              className="w-[49%] border rounded-4xl p-3 text-[0.8rem] border-[#777777] text-[#777777] outline-gray-500 pl-6 mb-2"
               required
             >
               <option value="none" selected>
@@ -147,7 +147,7 @@ function Signup() {
               name="designation"
               value={formData.designation}
               onChange={handleChange}
-              className="w-[49%] border rounded-4xl p-3 text-sm border-[#777777] outline-none pl-6 mb-2"
+              className="w-[49%] border rounded-4xl text-[0.8rem] border-[#777777] outline-none pl-6 mb-2"
               placeholder="Enter your Designation"
               required
             />
@@ -155,20 +155,20 @@ function Signup() {
 
           <div className="flex min-w-[60%] justify-between">
             <div className="w-[49%]">
-              <p className="text-[#777777] pl-3 mb-1">Date of Appointment</p>
+              <p className="text-[#777777] pl-3 mb-1 text-[0.8rem]">Date of Appointment</p>
               <input
                 type="date"
                 name="date_of_appointment"
                 value={formData.date_of_appointment}
                 onChange={handleChange}
-                className="w-full border rounded-4xl p-3 text-sm border-[#777777] text-[#777777] outline-none pl-6 mb-2"
+                className="w-full border rounded-4xl p-3 text-[0.8rem] border-[#777777] text-[#777777] outline-none pl-6 mb-2"
                 placeholder="Date of Appointment"
                 required
               />
             </div>
 
             <div className="w-[49%]">
-              <p className="text-[#777777] pl-3 mb-1">
+              <p className="text-[#777777] pl-3 mb-1 text-[0.8rem]">
                 Date of Appointment on Post
               </p>
               <input
@@ -176,7 +176,7 @@ function Signup() {
                 name="present_appointment"
                 value={formData.present_appointment}
                 onChange={handleChange}
-                className="w-full border rounded-4xl p-3 text-sm border-[#777777] text-[#777777] outline-none pl-6 mb-2"
+                className="w-full border rounded-4xl p-3 text-[0.8rem] border-[#777777] text-[#777777] outline-none pl-6 mb-2"
                 placeholder="Date of Appointment of Present Post"
                 required
                 disabled={sameAsDateOfAppointment}
@@ -190,29 +190,29 @@ function Signup() {
                     setSameAsDateOfAppointment(!sameAsDateOfAppointment)
                   }
                 />
-                <label htmlFor="sameDate" className="text-[#777777] text-sm">
+                <label htmlFor="sameDate" className="text-[#777777] text-[0.8rem]">
                   Same as date of appointment
                 </label>
               </div>
             </div>
           </div>
 
-          <button className="min-w-[60%] rounded-4xl bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200">
+          <button className="text-sm min-w-[60%] rounded-4xl bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200">
             Create Account
           </button>
 
-          <span className="text-[#797979]">OR</span>
+          <span className="text-[#797979] text-sm">OR</span>
           <button
             onClick={() =>
               (window.location.href = "http://localhost:4000/auth/google-login")
             }
             className="flex items-center gap-2 text-[#797979] border border-[#777777] text-[0.9rem] rounded-4xl py-2 px-4 cursor-pointer"
           >
-            <img src="/google.png" className="h-5" /> Sign In Using Google
-            Account
+            <img src="/google.png" className="h-5" /> 
+            <span className="text-[0.8rem]">Sign In Using Google Account</span>
           </button>
         </form>
-        <p className="text-[#797979] font-inter font-medium text-[1.1rem] mb-1">
+        <p className="text-[#797979] font-inter font-medium text-[1rem] mb-1">
           Already have an account?{" "}
           <span
             onClick={() => navigate("/login")}
