@@ -13,9 +13,33 @@ dotenv.config();
 const router = express.Router();
 
 
-router.post("/register", async (req, res) => {
+router.post("/register-admins", authenticateToken ,async (req, res) => {  // Created for adding HODs and Convenors later.. not to be used in frontend
   try {
     const { fname, lname, e_id, email, password, department, designation, date_of_appointment, present_appointment, user_type } = req.body;
+    const existing = await User.findOne({ e_id });
+    const existingmail = await User.findOne({ email });
+
+    if (existing) return res.status(400).json({ message: "User already exists" });
+    if (existingmail) return res.status(400).json({ message: "Email already exists" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await User.create({ fname, lname, e_id, email, password: hashedPassword, department, designation, date_of_appointment, present_appointment, user_type });
+    res.json({ message: "User registered successfully" });
+
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+
+});
+
+
+
+router.post("/register", async (req, res) => {
+  try {
+    const { fname, lname, e_id, email, password, department, designation, date_of_appointment, present_appointment } = req.body;
+    let user_type = "employee";
     const existing = await User.findOne({ e_id });
     const existingmail = await User.findOne({ email });
 

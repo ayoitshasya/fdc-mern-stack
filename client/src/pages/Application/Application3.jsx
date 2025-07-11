@@ -40,46 +40,6 @@ function Application3() {
       purpose_scope: formData.purpose_scope || "",
     });
 
-    // const form = new FormData();
-    // form.append("purpose", formData.purpose);
-    // form.append("org_institution", formData.org_institution);
-    // form.append("supporting_org", formData.supporting_org);
-    // form.append("duration_from", formData.duration_from);
-    // form.append("duration_to", formData.duration_to);
-    // form.append("total_days", formData.total_days);
-    // form.append("registration_last_day", formData.registration_last_day);
-    // form.append("registration_fee", formData.registration_fee);
-    // form.append("vacation_period", formData.vacation_period);
-    // form.append("ods_required", formData.ods_required);
-
-    // form.append("load_adjustment_file", loadAdjustmentFile);
-    // form.append("conference_brochure_file", conferenceBrochureFile);
-    // if (emailUploadFile) form.append("email_upload_file", emailUploadFile);
-
-    // form.append("amount_claimed", "0"); // Adjust if needed
-    // form.append("year", new Date().getFullYear().toString());
-    // form.append("total_ods", "0"); // Adjust if needed
-    // form.append("od_year", new Date().getFullYear().toString());
-    // form.append("purpose_scope", formData.purpose_scope || "");
-
-    // try {
-    //   const res = await axios.post(
-    //     "http://localhost:4000/application/submit-form",
-    //     form,
-    //     {
-    //       withCredentials: true,
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   );
-
-    //   alert("Application submitted successfully!");
-    //   navigate("/home");
-    // } catch (err) {
-    //   console.error("Submission error:", err);
-    //   alert("Something went wrong while submitting the application.");
-    // }}
     navigate("/fdc-application/step-4")
   }
 
