@@ -8,6 +8,8 @@ import Reimb1 from './pages/Reimbursement/Reimb1';
 import Reimb2 from './pages/Reimbursement/Reimb2';
 import Reimb3 from './pages/Reimbursement/Reimb3';
 import Reimb4 from './pages/Reimbursement/Reimb4';
+import ViewReimb from './pages/Reimbursement/ViewReimb'; 
+import PrincipalReimb from './pages/Reimbursement/PrincipalReimb'; 
 
 function App() {
   return (
@@ -21,15 +23,24 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/application" element={<Application1 />} />
             
-            {/* Corrected reimbursement routes */}
             <Route path="/reimbursement">
               <Route index element={<Navigate to="1" replace />} />
               <Route path="1" element={<Reimb1 />} />
               <Route path="2" element={<Reimb2 />} />
               <Route path="3" element={<Reimb3 />} />
               <Route path="4" element={<Reimb4 />} />
-              
             </Route>
+
+            
+            <Route path="/view-reimb" element={<ViewReimb />} />
+            
+          
+            <Route path="/principal">
+              <Route path="reimb/:id" element={<PrincipalReimb />} />
+              <Route path="reimbs" element={<ViewReimb />} />
+            </Route>
+            
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
       </div>

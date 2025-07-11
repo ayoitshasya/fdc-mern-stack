@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './View_Reimbursement.css';
+import './styles/ViewReimb.css';  
 
 const ViewReimbursement = () => {
   const [reimbursements, setReimbursements] = useState([]);
@@ -9,7 +9,7 @@ const ViewReimbursement = () => {
   const navigate = useNavigate();
 
   // This would come from your authentication context or session
-  const userType = 'employee'; // or 'Principal' - you'll need to get this from your auth system
+  const userType = 'employee'; 
   const eid = '12345'; // Replace with actual employee ID from session
 
   useEffect(() => {

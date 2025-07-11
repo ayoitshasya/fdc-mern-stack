@@ -20,11 +20,9 @@ function PrincipalReimb() {
   const [employee, setEmployee] = useState(null);
   const [isApproved, setIsApproved] = useState(false);
 
-  // Mock data fetch - replace with actual API calls
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 500));
         
         const mockData = {
@@ -57,7 +55,6 @@ function PrincipalReimb() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate approval submission
     console.log("Approving reimbursement:", {
       applicationId,
       ...formData,
@@ -65,8 +62,6 @@ function PrincipalReimb() {
     });
     
     setIsApproved(true);
-    
-    // Auto-redirect after 3 seconds (optional)
     setTimeout(() => navigate('/principal/dashboard'), 3000);
   };
 
