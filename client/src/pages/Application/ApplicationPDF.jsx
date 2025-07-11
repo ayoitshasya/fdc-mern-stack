@@ -4,7 +4,7 @@ import { useFormContext } from "../../layouts/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-function Application4() {
+function ApplicationPDF() {
     const {  getFormData } = useFormContext();
     const navigate = useNavigate();
     const uniqueId = Date.now().toString();
@@ -128,7 +128,7 @@ const academicYear =
       
 
   return (
-    <div className='w-full h-full flex flex-col items-center'>
+    <div className='w-full min-h-screen bg-[#e8e8e8] flex flex-col items-center'>
         <Header/>
         <div id="print-section">
             <div className="flex avoid-break w-full">
@@ -254,4 +254,4 @@ const academicYear =
   );
 }
 
-export default Application4;
+export default ApplicationPDF;
