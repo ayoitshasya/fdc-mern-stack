@@ -42,7 +42,7 @@ export async function sendStatusMail(applicationId, status, userId) {
           <p>Your application for <b>${application.purpose}</b> organised by ${application.org_institution} has been <b>${statusText}</b>.</p>
           <p><b>Application ID:</b> ${application._id}</p>
           <p><b>Status:</b> ${status}</p>
-          <p>Regards,<br/>KJSCE FDC Admin</p>
+          <p>Regards,<br/>KJSSE FDC Admin</p>
         `,
       };
   
@@ -97,3 +97,36 @@ export async function notifyNextReviewer(userType) {
     }
   }
   
+
+  export async function notifyHOD(e_id, department) {
+    try {
+      const hods = await userModel.find({
+        user_type: "hod",
+        department: department,
+      });
+  
+      if (!hods.length) {
+        console.log(`No HODs found for department ${department}`);
+        return;
+      }
+  
+      for (const hod of hods) {
+        const mailOptions = {
+          from: `"FDC Portal" <${process.env.MAIL_USER}>`,
+          to: hod.email,
+          subject: `New FDC Application Requires Your Review`,
+          html: `
+            <p>Hello ${hod.fname || "HOD"},</p>
+            <p>An application submitted by employee ID <b>${e_id}</b> from your department is awaiting your review.</p>
+            <p>Please log in to the FDC portal to take necessary action.</p>
+            <p>Regards,<br/>KJSSE FDC Admin</p>
+          `,
+        };
+  
+        await transporter.sendMail(mailOptions);
+        console.log(`Notification sent to HOD: ${hod.email}`);
+      }
+    } catch (error) {
+      console.error("Error sending notification to HOD:", error);
+    }
+  }

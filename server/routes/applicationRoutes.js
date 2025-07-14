@@ -6,8 +6,7 @@ import cloudinary from "../utils/cloudinary.js";
 import authenticateToken from "../middlewares/authenticateToken.js";
 import { applicationModel } from "../models/Application.js";
 import userModel from "../models/User.js";
-import { sendStatusMail } from "../utils/nodemailer.js";
-import { notifyNextReviewer } from "../utils/nodemailer.js";
+import { sendStatusMail, notifyNextReviewer, notifyHOD } from "../utils/nodemailer.js";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -100,6 +99,7 @@ router.post(
       };
 
       const application = await applicationModel.create(applicationData);
+      await notifyHOD(e_id, currentUser.department)
       res.status(201).json({ message: "Application submitted successfully", application });
     } catch (error) {
       console.error("Error submitting application:", error);
