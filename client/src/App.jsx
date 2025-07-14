@@ -8,12 +8,14 @@ import Application1 from './pages/Application/Application1'
 import Application2 from './pages/Application/Application2'
 import Application3 from './pages/Application/Application3'
 import ApplicationHOD from './pages/Application/ApplicationHOD'
+import ApplicationFDCConvenor from './pages/Application/ApplicationFDCConvenor'
 import ApplicationPrincipal from './pages/Application/ApplicationPrincipal'
 import ApplicationPDF from './pages/Application/ApplicationPDF'
 import Reimbursement1 from './pages/Reimbursement/Reimbursement1'
 import Reimbursement2 from './pages/Reimbursement/Reimbursement2'
 import Reimbursement3 from './pages/Reimbursement/Reimbursement3'
 import Reimbursement4 from './pages/Reimbursement/Reimbursement4'
+import ReimbursementPrincipal from './pages/Reimbursement/ReimbursementPrincipal'
 
 function App() {
   
@@ -35,11 +37,13 @@ function App() {
           <Route path="/fdc-application/step-4" element={<ApplicationPDF />} />
           <Route path="/application/Status" element={<ApplicationStatus />} />
           <Route path="/application/HOD" element={<ApplicationHOD />} />
+          <Route path="/application/FDCConvenor" element={<ApplicationFDCConvenor />} />
           <Route path="/application/Principal" element={<ApplicationPrincipal />} />
           <Route path="/fdc-reimbursement/step-1" element={<Reimbursement1 />} />
           <Route path="/fdc-reimbursement/step-2" element={<Reimbursement2 />} />
           <Route path="/fdc-reimbursement/step-3" element={<Reimbursement3 />} />
           <Route path="/fdc-reimbursement/step-4" element={<Reimbursement4 />} />
+          <Route path="/fdc-reimbursement/Principal" element={<ReimbursementPrincipal />} />
         </Routes> }
 
       </div>
