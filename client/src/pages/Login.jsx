@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 function Login() {
-  const navigate = useNavigate();
 
+  const { user, loggedIn, loading, setUser, setLoggedIn, setLoading } = useUser();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     e_id: "",
     password: "",
@@ -28,8 +30,11 @@ function Login() {
           withCredentials: true,
         }
       );
+      console.log(res.data)
       if (res.status === 200) {
-        navigate("/home");
+        setUser(res.data.user);
+        setLoading(false);
+        setLoggedIn(true);
       }
     } catch (err) {
       if (err.response && err.response.data) {
@@ -96,7 +101,7 @@ function Login() {
         <p className="text-[#797979] font-inter font-medium text-[1.1rem] mb-1">
           New to FDC Application?{" "}
           <span
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/signup")}
             className="text-[#B7202E] cursor-pointer hover:underline"
           >
             Signup Here

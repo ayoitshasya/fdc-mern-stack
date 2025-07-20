@@ -4,13 +4,22 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import dotenv from "dotenv";
-import User from "../models/User.js"; // Note: ensure .js extension for ESM
+import User from "../models/User.js"; 
 import jwt from 'jsonwebtoken'
 import authenticateToken from "../middlewares/authenticateToken.js";
+import userModel from "../models/User.js";
 
 dotenv.config();
 
 const router = express.Router();
+
+
+router.get('/check-auth', authenticateToken, async (req, res) => {
+      const e_id = req.user.e_id;
+      const user = await userModel.findOne({ e_id });
+      return res.status(200).json({ loggedIn: true, user: { e_id: e_id, fname: user.fname, lname: user.lname || null }});
+})
+
 
 
 router.post("/register-admins", authenticateToken ,async (req, res) => {  // Created for adding HODs and Convenors later.. not to be used in frontend
@@ -175,7 +184,7 @@ router.get("/google/callback", async (req, res) => {
   });
 
   // Redirect to frontend home page
-  res.redirect("http://localhost:5173/home");
+  res.redirect("http://localhost:5173/");
 });
 
 

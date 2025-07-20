@@ -5,7 +5,6 @@ const authenticateToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: Token missing" });
   }
-
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(403).json({ message: "Forbidden: Token invalid" });

@@ -21,13 +21,14 @@ const reimbursementSchema = new Schema({
     da_amount:{
         type: Number,
     },
-    attachments:{
-        type:String,
-        required: true
+    attachment:{
+        type:String
     },
     status:{
         type: String,
-        required: true
+        enum: ["pending", "approved-by-hod", "approved-by-convenor", "approved-by-principal", "rejected-by-hod", "rejected-by-convenor", "rejected-by-principal"],
+        required: true,
+        default: "pending"
     }
 
     

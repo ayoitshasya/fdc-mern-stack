@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../../Components/Header';
-import { useFormContext } from "../../layouts/FormContext";
+import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -59,7 +59,7 @@ const academicYear =
           );
       
           alert("Application submitted successfully!");
-          navigate("/home");
+          navigate("/");
         } catch (err) {
           console.error("Submission error:", err);
           alert("Something went wrong while submitting the application.");

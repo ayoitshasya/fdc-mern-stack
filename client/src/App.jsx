@@ -1,54 +1,54 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Home from './pages/Home'
-import ApplicationStatus from './pages/Application/ApplicationStatus'
-import Application1 from './pages/Application/Application1'
-import Application2 from './pages/Application/Application2'
-import Application3 from './pages/Application/Application3'
-import ApplicationHOD from './pages/Application/ApplicationHOD'
-import ApplicationFDCConvenor from './pages/Application/ApplicationFDCConvenor'
-import ApplicationPrincipal from './pages/Application/ApplicationPrincipal'
-import ApplicationPDF from './pages/Application/ApplicationPDF'
-import Reimbursement1 from './pages/Reimbursement/Reimbursement1'
-import Reimbursement2 from './pages/Reimbursement/Reimbursement2'
-import Reimbursement3 from './pages/Reimbursement/Reimbursement3'
-import Reimbursement4 from './pages/Reimbursement/Reimbursement4'
-import ReimbursementPrincipal from './pages/Reimbursement/ReimbursementPrincipal'
+import { useEffect } from 'react';
+import AppRoutes from './Routes.jsx'
+import { useUser } from './context/UserContext.jsx'
 
 function App() {
-  
+  const { user, loggedIn, loading, setUser, setLoggedIn, setLoading } = useUser();
 
-  
-  
+  useEffect(() => {
+    const checkLogin = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:4000/auth/check-auth", {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        const data = await res.json();
+        if (res.ok && data.loggedIn) {
+          setUser(data.user);
+          setLoggedIn(true);
+          setLoading(false); 
+        } else {
+          setUser(null);
+          setLoggedIn(false);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Error checking login:", err);
+        setUser(null);
+        setLoggedIn(false);
+        setLoading(false);
+      }
+    };
+
+    checkLogin();
+  }, []);
+
+  if(loading) return(
+    <div className='h-screen w-screen bg-white'></div>
+  )
+
   return (
     <>
-    <div className='h-screen flex flex-col'>
-      <div  className='h-6 bg-[#B7202E] w-full text-[#B7202E]'>.</div>
-      <div className='bg-[url(/campus.jpg)] bg-cover w-full flex-1'>
-             { <Routes>
-          <Route path="/" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/fdc-application/step-1" element={<Application1 />} />
-          <Route path="/fdc-application/step-2" element={<Application2 />} />
-          <Route path="/fdc-application/step-3" element={<Application3 />} />
-          <Route path="/fdc-application/step-4" element={<ApplicationPDF />} />
-          <Route path="/application/Status" element={<ApplicationStatus />} />
-          <Route path="/application/HOD" element={<ApplicationHOD />} />
-          <Route path="/application/FDCConvenor" element={<ApplicationFDCConvenor />} />
-          <Route path="/application/Principal" element={<ApplicationPrincipal />} />
-          <Route path="/fdc-reimbursement/step-1" element={<Reimbursement1 />} />
-          <Route path="/fdc-reimbursement/step-2" element={<Reimbursement2 />} />
-          <Route path="/fdc-reimbursement/step-3" element={<Reimbursement3 />} />
-          <Route path="/fdc-reimbursement/step-4" element={<Reimbursement4 />} />
-          <Route path="/fdc-reimbursement/Principal" element={<ReimbursementPrincipal />} />
-        </Routes> }
+      <div className='h-screen flex flex-col'>
+        <div  className='h-6 bg-[#B7202E] w-full text-[#B7202E]'>.</div>
+        <div className='bg-[url(/campus.jpg)] bg-cover w-full flex-1'>
 
+              <AppRoutes />
+        </div>
       </div>
-    </div>
-      
     </>
   )
 }

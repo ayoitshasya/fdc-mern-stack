@@ -2,6 +2,7 @@
 import nodemailer from "nodemailer";
 import userModel from "../models/User.js";
 import {applicationModel} from "../models/Application.js";
+import { reimbursementModel } from "../models/Reimbursement.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -56,9 +57,16 @@ export async function sendStatusMail(applicationId, status, userId) {
 
 
 
-export async function notifyNextReviewer(userType) {
+export async function notifyNextReviewer(userType, type) {
     let nextRole;
-  
+    let mailType;
+    if(type == "application"){
+      mailType = "Application"
+    }
+    else if(type === "reimbursement"){
+      mailType = "Reimbursement Form"
+    }
+
     if (userType === "hod") {
       nextRole = "fdc-convenor";
     } else if (userType === "fdc-convenor") {
@@ -79,10 +87,10 @@ export async function notifyNextReviewer(userType) {
         const mailOptions = {
           from: `"FDC Portal" <${process.env.MAIL_USER}>`,
           to: reviewer.email,
-          subject: `New FDC Application Awaiting Your Review`,
+          subject: `New FDC ${mailType} Awaiting Your Review`,
           html: `
             <p>Hello ${reviewer.fname || "Reviewer"},</p>
-            <p>A new application has been approved at a previous level and is now awaiting your review.</p>
+            <p>A new ${mailType} has been approved at a previous level and is now awaiting your review.</p>
             <p>Please log in to the FDC portal to proceed.</p>
             <p>Regards,<br/>KJSSE FDC Admin</p>
           `,
@@ -128,5 +136,48 @@ export async function notifyNextReviewer(userType) {
       }
     } catch (error) {
       console.error("Error sending notification to HOD:", error);
+    }
+  }
+
+
+  export async function sendStatusMailReimbursement(reimbursementId, status, userId) {
+    try {
+      const user = await userModel.findById(userId);
+      const form = await reimbursementModel.findById(reimbursementId).populate("application_id");
+      
+  
+      if (!user || !form) {
+        console.log("User or form not found for mailing.");
+        return;
+      }
+  
+      // Determine role display
+      let roleDisplay = "";
+      if (status.includes("hod")) roleDisplay = "HOD";
+      else if (status.includes("principal")) roleDisplay = "Principal";
+      else if (status.includes("convenor")) roleDisplay = "FDC Convenor";
+      else roleDisplay = "Reviewer";
+  
+      const statusText = status.startsWith("approved")
+        ? `approved by ${roleDisplay}`
+        : `rejected by ${roleDisplay}`;
+  
+      const mailOptions = {
+        from: `"FDC Portal" <${process.env.MAIL_USER}>`,
+        to: user.email,
+        subject: `Reimbursement Form ${statusText}`,
+        html: `
+          <p>Hello ${user.name || user.fname || "User"},</p>
+          <p>Your Reimbursement Form for <b>${form.application_id.purpose}</b> organised by ${form.application_id.org_institution} has been <b>${statusText}</b>.</p>
+          <p><b>Reimbursement ID:</b> ${form._id}</p>
+          <p><b>Status:</b> ${status}</p>
+          <p>Regards,<br/>KJSSE FDC Admin</p>
+        `,
+      };
+  
+      await transporter.sendMail(mailOptions);
+      console.log(`Mail sent to ${user.email}`);
+    } catch (err) {
+      console.error("Error sending mail:", err);
     }
   }

@@ -46,7 +46,7 @@ function Signup() {
 
       if (res.ok) {
         alert("Registration successful!");
-        navigate("/login");
+        navigate("/");
       } else {
         alert(data.message || "Registration failed");
       }

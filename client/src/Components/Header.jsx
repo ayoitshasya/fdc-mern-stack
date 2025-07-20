@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 function Header() {
+  const {setUser, setLoggedIn, setLoading} = useUser();
   const navigate = useNavigate();
-  const [user, setUser] = useState({ fname: "", lname: "", profilePicture: "" });
+  const [profileUser, setProfileUser] = useState({ fname: "", lname: "", profilePicture: "" });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -13,7 +15,7 @@ function Header() {
           withCredentials: true,
         });
         const { fname, lname, profilePicture } = res.data;
-        setUser({ fname, lname, profilePicture });
+        setProfileUser({ fname, lname, profilePicture });
       } catch (err) {
         console.error("Error fetching profile", err);
         navigate("/login");
@@ -26,7 +28,10 @@ function Header() {
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:4000/auth/logout", {}, { withCredentials: true });
-      navigate("/login");
+      setUser();
+      setLoading(false);
+      setLoggedIn(false);
+      navigate("/");
     } catch (err) {
       console.error("Logout failed", err);
     }
@@ -37,12 +42,12 @@ function Header() {
       <div className="h-full flex items-center gap-8">
         <img src="/mini-logo.png" className="h-14" />
         <h1 className="font-inter font-light text-lg">
-          Welcome, {user.fname} {user.lname}
+          Welcome, {profileUser.fname} {profileUser.lname}
         </h1>
       </div>
       <div className="h-full flex items-center gap-4">
         <button className="flex items-center gap-2 border rounded-4xl p-2 border-[#6F6F6F] cursor-pointer">
-          <img src={user.profilePicture || "/user.png"} className="h-6 w-6 rounded-full object-cover" />
+          <img src={profileUser.profilePicture || "/user.png"} className="h-6 w-6 rounded-full object-cover" />
           <span className="text-[1rem] font-light font-inter mr-1">
             Profile
           </span>

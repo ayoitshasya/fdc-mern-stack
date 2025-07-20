@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useFormContext } from "../../layouts/FormContext";
+import { useFormContext } from "../../context/FormContext";
 
 function Reimbursement3() {
   const navigate = useNavigate();
@@ -167,7 +167,7 @@ function Reimbursement3() {
 
             {/* File Upload */}
             <label className="mb-1">
-              Attach original receipt and xerox copy of certificate/attendance certificate if any:
+              Attach Zip file of original receipt and xerox copy of certificate/attendance certificate if any:
             </label>
             <input
               type="file"

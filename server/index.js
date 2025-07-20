@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from 'dotenv';
 import authRouter from "./routes/authRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
+import reimbursementRouter from './routes/reimbursementRoutes.js'
 import cookieParser from "cookie-parser";
 
 dotenv.config({
@@ -10,8 +11,6 @@ dotenv.config({
 })
 
 import connectDB from "./utils/dbConnection.js";
-
-
 
 const PORT = process.env.PORT;
 
@@ -23,10 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/auth', authRouter)
 app.use('/application', applicationRouter)
+app.use('/reimbursement', reimbursementRouter)
 
 
 connectDB();
-
 
 app.get("/", (req, res) => {
     res.send("API is running...");

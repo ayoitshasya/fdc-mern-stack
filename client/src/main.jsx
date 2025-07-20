@@ -3,14 +3,17 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import {BrowserRouter} from 'react-router-dom'
-import {FormProvider} from './layouts/FormContext.jsx'
+import {FormProvider} from './context/FormContext.jsx'
+import { UserProvider } from './context/UserContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <FormProvider>
-        <App />
-      </FormProvider>
+      <UserProvider>
+        <FormProvider>
+          <App />
+        </FormProvider>
+      </UserProvider>
     </BrowserRouter>
   </StrictMode>,
 )

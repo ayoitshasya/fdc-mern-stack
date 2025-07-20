@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
-import { useFormContext } from "../../layouts/FormContext";
+import { useFormContext } from "../../context/FormContext";
 import axios from "axios";
 
 function Application1() {
@@ -43,7 +43,7 @@ function Application1() {
         const res = await axios.get("http://localhost:4000/auth/profile", {
           withCredentials: true,
         });
-
+        
         setUserData({
           fname: res.data.fname || "",
           lname: res.data.lname || "",

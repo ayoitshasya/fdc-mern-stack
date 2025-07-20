@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../Components/Header";
-import { useFormContext } from "../../layouts/FormContext";
+import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 
 
@@ -10,7 +10,6 @@ function Application3() {
 
   const formName = "fdcApplication";
   const formData = getFormData(formName);
-  console.log(formData);
 
   const [amountClaimedDate, setAmountClaimedDate] = useState("");
   const [totalOds, setTotalOds] = useState(0);
@@ -93,7 +92,7 @@ function Application3() {
                 className="w-full border rounded-lg p-1 outline-none mt-1 mb-2"
               />
 
-              <label htmlFor="upload_cb">Upload Conference brochure *</label>
+              <label htmlFor="upload_cb">Upload Conference brochure (.pdf, .docx, .doc): *</label>
               <input
                 type="file"
                 name="upload_cb"
@@ -104,14 +103,13 @@ function Application3() {
               />
 
               <label htmlFor="upload_email">
-                Upload email if high authority has mailed(jpeg, jpg, png, .pdf,
-                .docx)
+                Upload email screenshot if high authority has mailed(jpeg, jpg, png)
               </label>
               <input
                 type="file"
                 name="upload_email"
                 onChange={(e) => setEmailUploadFile(e.target.files[0])}
-                accept=".jpeg, .png, .jpg, .pdf,.doc,.docx"
+                accept=".jpeg, .png, .jpg"
                 className="w-full border rounded-lg p-1 outline-none mt-1 mb-2"
               />
 

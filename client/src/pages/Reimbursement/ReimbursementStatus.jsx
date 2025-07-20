@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
+import { useNavigate } from 'react-router';
 
 function ReimbursementStatus() {
   const [applications, setApplications] = useState([]);
   const [view, setView] = useState('pending');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -28,7 +30,7 @@ function ReimbursementStatus() {
     <div className='w-full h-full flex flex-col'>
       <Header />
       <div className='bg-[url(/campus.jpg)] bg-cover w-full h-full flex flex-col items-center p-6'>
-        <div className='bg-white bg-opacity-90 rounded-3xl p-6 px-10 max-w-6xl w-full shadow-md'>
+        <div className='bg-white bg-opacity-90 rounded-3xl p-6 px-10 max-w-6xl w-full shadow-md flex flex-col'>
           <h1 className='text-2xl font-semibold text-center text-[#B7202E] mb-6'>Reimbursement Forms</h1>
 
           {/* Toggle Tabs */}
@@ -68,6 +70,9 @@ function ReimbursementStatus() {
           {activeList.length === 0 && (
             <div className="text-center text-gray-500 py-6">No applications to display.</div>
           )}
+
+          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-reimbursement/step-1")}}>New Reimbursement</button>
+        
         </div>
       </div>
     </div>
