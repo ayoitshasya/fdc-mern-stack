@@ -22,7 +22,7 @@ function ReimbursementHOD() {
                 </label>
                 <input type="checkbox" name="checkedLoadAdjustment" id="checkedLoadAdjustment" className='accent-[#B7202E] w-5 h-5'/>
             </div>
-
+              
             <label htmlFor="reason">Reason for Recommendation/Non-Recommendation *</label>
             <input type="text" name='reason' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2'/>
             
