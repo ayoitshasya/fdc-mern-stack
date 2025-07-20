@@ -260,4 +260,4 @@ function Application2() {
   );
 }
 
-export default Application2;
+export default Application2;
