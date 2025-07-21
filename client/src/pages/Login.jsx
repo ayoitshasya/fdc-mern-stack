@@ -33,6 +33,7 @@ function Login() {
       console.log(res.data)
       if (res.status === 200) {
         setUser(res.data.user);
+        console.log("login wala set user: ",res.data.user)
         setLoading(false);
         setLoggedIn(true);
       }
@@ -42,6 +43,9 @@ function Login() {
       } else {
         setError("Something went wrong");
       }
+      setLoading(false);
+      setLoggedIn(false);
+      setUser(null)
     }
   };
 

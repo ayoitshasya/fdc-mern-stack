@@ -10,7 +10,6 @@ function ApplicationStatus() {
   const navigate = useNavigate();
   const {user} = useUser()
 
-
   useEffect(() => {
     
     const fetchApplications = async () => {
@@ -87,7 +86,7 @@ function ApplicationStatus() {
               {activeList.map((app) => (
                 <div key={app.id} className={`grid ${view === 'pending' ? 'grid-cols-4' : 'grid-cols-5'} border-b py-2 text-sm text-[#3D3D3D]`}>
                   <span>{app._id}</span>
-                  <span>{user.fname} {user.lname}</span>
+                  <span>{user?.fname} {user?.lname}</span>
                   <span>{app.purpose}</span>
                   <span>{app.status.replace(/-/g, " ")}</span>
                   <span>{app.submittedOn}</span>

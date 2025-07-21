@@ -17,9 +17,8 @@ const router = express.Router();
 router.get('/check-auth', authenticateToken, async (req, res) => {
       const e_id = req.user.e_id;
       const user = await userModel.findOne({ e_id });
-      return res.status(200).json({ loggedIn: true, user: { e_id: e_id, fname: user.fname, lname: user.lname || null }});
+      return res.status(200).json({ loggedIn: true, user: { e_id: e_id, fname: user.fname, lname: user.lname, user_type: user.user_type || null }});
 })
-
 
 
 router.post("/register-admins", authenticateToken ,async (req, res) => {  // Created for adding HODs and Convenors later.. not to be used in frontend
@@ -89,7 +88,7 @@ router.post("/login", async (req, res) => {
       maxAge: 3600000
     });
 
-    res.status(200).json({ message: "Login successful", user: { e_id, user_type: user.user_type } });
+    res.status(200).json({ message: "Login successful", user: { e_id, fname:user.fname, lname: user.lname, user_type: user.user_type } });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });

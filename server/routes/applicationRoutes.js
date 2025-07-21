@@ -159,29 +159,10 @@ router.post('/application-review', authenticateToken, async(req, res) =>{
 
         }
         else if(userType == "fdc-convenor"){
-
           approveStatus = "approved-by-convenor";
           rejectStatus = "rejected-by-convenor";
-          const { date_of_meeting, final_recommendation } = req.body;
-          if (!date_of_meeting || !final_recommendation) {
-            return res.status(400).json({ message: "Missing required fields." });
-          }
-          updateObject.date_of_meeting = date_of_meeting;
-          updateObject.final_recommendation = final_recommendation;
-
         }
-        else if(userType == "principal"){
-
-          approveStatus = "approved-by-principal";
-          rejectStatus = "rejected-by-principal";
-          const { amount_sanctioned, od_sanctioned } = req.body;
-          if (amount_sanctioned == null || od_sanctioned == null) {
-            return res.status(400).json({ message: "Missing required fields." });
-          }
-          updateObject.amount_sanctioned = amount_sanctioned;
-          updateObject.od_sanctioned = od_sanctioned;
-
-        }else{
+        else{
           return res.status(401).json({message: "User unauthorised."})
         }
 
