@@ -128,24 +128,37 @@ function Application3() {
               />
 
               <p className="font-medium text-[#666666]">
-                Check above details and click next to proceed further
+              Check above details and click next to proceed further
               </p>
               <div className="flex items-center mb-4">
-                <span className="font-light">
-                  I have checked the above details
-                </span>
-                <input
-                  type="checkbox"
-                  name="checked"
-                  id="checked"
-                  className="ml-2 accent-[#B7202E]"
-                  required
-                />
+              <span className="font-light">
+                I have checked the above details
+              </span>
+              <input
+                type="checkbox"
+                name="checked"
+                id="checked"
+                className="ml-2 accent-[#B7202E]"
+                required
+              />
               </div>
-
-              <button type="submit" className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer">
-                Next
+            
+              <div className="flex justify-center gap-4 mt-3.5">
+              <button
+              type="button"
+              onClick={() => navigate("/fdc-application/step-2")}
+              className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+              >
+              Back
               </button>
+            
+              <button
+              type="submit"
+              className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer"
+              >
+              Next
+              </button>
+              </div>
             </form>
           </div>
         </div>

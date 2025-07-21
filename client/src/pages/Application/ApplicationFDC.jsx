@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../../Components/Header'
 
-function ApplicationHOD() {
+function ApplicationFDC() {
   return (
     <div className='w-full h-full flex flex-col'>
       <Header/>
@@ -38,4 +38,4 @@ function ApplicationHOD() {
   )
 }
 
-export default ApplicationHOD
+export default ApplicationFDC
