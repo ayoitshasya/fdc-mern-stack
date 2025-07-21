@@ -8,14 +8,13 @@ import Application1 from './pages/Application/Application1'
 import Application2 from './pages/Application/Application2'
 import Application3 from './pages/Application/Application3'
 import ApplicationHOD from './pages/Application/ApplicationHOD'
-import ApplicationFDCConvenor from './pages/Application/ApplicationFDCConvenor'
-import ApplicationPrincipal from './pages/Application/ApplicationPrincipal'
+import ApplicationFDC from './pages/Application/ApplicationFDC'
 import ApplicationPDF from './pages/Application/ApplicationPDF'
 import Reimbursement1 from './pages/Reimbursement/Reimbursement1'
 import Reimbursement2 from './pages/Reimbursement/Reimbursement2'
 import Reimbursement3 from './pages/Reimbursement/Reimbursement3'
 import Reimbursement4 from './pages/Reimbursement/Reimbursement4'
-import ReimbursementPrincipal from './pages/Reimbursement/ReimbursementPrincipal'
+import ReimbursementFDC from './pages/Reimbursement/ReimbursementFDC'
 import ReimbursementStatus from './pages/Reimbursement/ReimbursementStatus'
 
 import { useUser } from './context/UserContext'
@@ -40,13 +39,12 @@ function AppRoutes(){
                         <Route path="/fdc-application/step-4" element={<ApplicationPDF />} />
                         <Route path="/application/Status" element={<ApplicationStatus />} />
                         <Route path="/application/HOD" element={<ApplicationHOD />} />
-                        <Route path="/application/FDCConvenor" element={<ApplicationFDCConvenor />} />
-                        <Route path="/application/Principal" element={<ApplicationPrincipal />} />
+                        <Route path="/application/FDC" element={<ApplicationFDC />} />
                         <Route path="/fdc-reimbursement/step-1" element={<Reimbursement1 />} />
                         <Route path="/fdc-reimbursement/step-2" element={<Reimbursement2 />} />
                         <Route path="/fdc-reimbursement/step-3" element={<Reimbursement3 />} />
                         <Route path="/fdc-reimbursement/step-4" element={<Reimbursement4 />} />
-                        <Route path="/reimbursement/Principal" element={<ReimbursementPrincipal />} />
+                        <Route path="/reimbursement/FDC" element={<ReimbursementFDC />} />
                         <Route path="/reimbursement/Status" element={<ReimbursementStatus />} />
 
                         <Route path='*' element={<Navigate to='/' />} />
