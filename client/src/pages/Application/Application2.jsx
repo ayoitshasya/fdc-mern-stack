@@ -246,13 +246,23 @@ function Application2() {
                 required
               />
             </div>
-
+            
+            <div className="flex justify-center gap-4 mt-3.5">
+            <button
+              type="button"
+              onClick={() => navigate("/fdc-application/step-1")}
+              className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+            >
+            Back
+            </button>
+            
             <button
               type="submit"
               className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer"
             >
               Next
             </button>
+            </div>
           </form>
         </div>
       </div>
