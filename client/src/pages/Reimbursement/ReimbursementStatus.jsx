@@ -71,12 +71,20 @@ function ReimbursementStatus() {
             <div className="text-center text-gray-500 py-6">No applications to display.</div>
           )}
 
-          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-reimbursement/step-1")}}>New Reimbursement</button>
-        
+          <div className="flex justify-between items-center mt-5">
+          <button
+            className="rounded-4xl bg-gray-400 text-white px-40 py-3 font-semibold cursor-pointer hover:bg-gray-500 duration-200"
+            onClick={() => navigate("/")}
+          >
+            Back
+          </button>
+
+          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white px-30 p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-reimbursement/step-1")}}>New Reimbursement</button>
+        </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default ReimbursementStatus;
+export default ReimbursementStatus 

@@ -144,6 +144,15 @@ function ReimbursementPrincipal() {
               />
             </div>
 
+            <div className='flex justify-center gap-4 mt-2'>
+              <button
+                type="button"
+                onClick={() => navigate(" ")} // ye route replace karna FDC status page se
+                className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+              >
+                Back
+              </button>
+
             <button
               type="button"
               onClick={handleSubmit}
@@ -151,6 +160,7 @@ function ReimbursementPrincipal() {
             >
               Submit
             </button>
+            </div>
           </form>
         </div>
       </div>

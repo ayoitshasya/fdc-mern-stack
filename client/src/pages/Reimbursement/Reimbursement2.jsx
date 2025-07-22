@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Reimbursement2() {
   const [approvedApplications, setApprovedApplications] = useState([]);
   const [selectedAppId, setSelectedAppId] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApprovedApplications = async () => {
@@ -58,12 +60,23 @@ function Reimbursement2() {
             ))}
           </select>
 
-          <button
-            onClick={handleNext}
-            className="rounded-full bg-[#B7202E] text-white px-20 py-2"
-          >
-            Next
-          </button>
+          <div className="flex justify-center gap-4 mt-2">
+            <button
+                type="button"
+                onClick={() => navigate("/fdc-reimbursement/step-1")}
+                className="rounded-4xl bg-gray-400 text-white px-25 py-2 cursor-pointer"
+            >
+              Back
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-25 cursor-pointer"
+            >
+              Next
+            </button>
+            </div>
         </div>
       </div>
     </div>

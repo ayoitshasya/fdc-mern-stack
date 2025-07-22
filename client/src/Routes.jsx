@@ -14,6 +14,7 @@ import Reimbursement1 from './pages/Reimbursement/Reimbursement1'
 import Reimbursement2 from './pages/Reimbursement/Reimbursement2'
 import Reimbursement3 from './pages/Reimbursement/Reimbursement3'
 import Reimbursement4 from './pages/Reimbursement/Reimbursement4'
+import ReimbursementHOD from './pages/Reimbursement/ReimbursementHOD'
 import ReimbursementFDC from './pages/Reimbursement/ReimbursementFDC'
 import ReimbursementStatus from './pages/Reimbursement/ReimbursementStatus'
 
@@ -44,6 +45,7 @@ function AppRoutes(){
                         <Route path="/fdc-reimbursement/step-2" element={<Reimbursement2 />} />
                         <Route path="/fdc-reimbursement/step-3" element={<Reimbursement3 />} />
                         <Route path="/fdc-reimbursement/step-4" element={<Reimbursement4 />} />
+                        <Route path="/reimbursement/HOD" element={<ReimbursementHOD />} />
                         <Route path="/reimbursement/FDC" element={<ReimbursementFDC />} />
                         <Route path="/reimbursement/Status" element={<ReimbursementStatus />} />
 

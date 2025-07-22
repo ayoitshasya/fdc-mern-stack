@@ -103,9 +103,16 @@ function ApplicationStatus() {
           {/* Table Rows */}
           
 
+          <div className="flex justify-between items-center gap-10 mt-5">
+          <button
+            className="rounded-4xl bg-gray-400 text-white px-40 py-3 font-semibold cursor-pointer hover:bg-gray-500 duration-200"
+            onClick={() => navigate("/")}
+          >
+            Back
+          </button>
           
-          
-          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-application/step-1")}}>New Application</button>
+          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white px-30 p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-application/step-1")}}>New Application</button>
+        </div>
         </div>
       </div>
     </div>

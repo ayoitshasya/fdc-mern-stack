@@ -195,6 +195,15 @@ function Reimbursement3() {
               />
             </div>
 
+            <div className="flex justify-center gap-4 mt-2">
+            <button
+                type="button"
+                onClick={() => navigate("/fdc-reimbursement/step-2")}
+                className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+            >
+              Back
+            </button>
+
             <button
               type="button"
               onClick={handleNext}
@@ -202,6 +211,7 @@ function Reimbursement3() {
             >
               Next
             </button>
+            </div>
           </form>
         </div>
       </div>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../../context/FormContext";
 
 function Reimbursement4() {
   const [isChecked, setIsChecked] = useState(false);
   const { updateFormData } = useFormContext();
   const formName = "fdcReimbursement";
+  const navigate = useNavigate();
 
   const [fdcData, setFdcData] = useState({
     amount_claimed: "",
@@ -96,6 +98,15 @@ function Reimbursement4() {
               />
             </div>
 
+            <div className="flex justify-center gap-4 mt-2">
+            <button
+                type="button"
+                onClick={() => navigate("/fdc-reimbursement/step-3")}
+                className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+            >
+              Back
+            </button>
+
             <button
               type="button"
               onClick={handleSubmit}
@@ -103,6 +114,7 @@ function Reimbursement4() {
             >
               Submit
             </button>
+            </div>
           </form>
         </div>
       </div>

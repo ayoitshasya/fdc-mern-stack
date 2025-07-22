@@ -1,7 +1,10 @@
 import React from 'react'
 import Header from '../../Components/Header'
+import { useNavigate } from 'react-router-dom';
 
 function ReimbursementHOD() {
+  const navigate = useNavigate();
+  
   return (
     <div className='w-full h-full flex flex-col'>
       <Header/>
@@ -32,7 +35,22 @@ function ReimbursementHOD() {
                 <input type="checkbox" name="checked" id="checked" className='ml-2 accent-[#B7202E]'/>
             </div>
             
-            <button className='rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer'>Submit</button>
+            <div className='flex justify-center gap-4 mt-2'>
+              <button
+                type="button"
+                onClick={() => navigate(" ")} // ye route replace karna HOD status page se
+                className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+              >
+                Back
+              </button>
+
+            <button
+                type="submit"
+                className="rounded-4xl bg-[#B7202E] text-white px-40 py-2 cursor-pointer"
+              >
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       </div>
