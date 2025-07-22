@@ -29,18 +29,19 @@ function Application3() {
     fetchData();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleNext = async (e) => {
+  e.preventDefault();
 
-    updateFormData(formName, {
-      load_adjustment_file: loadAdjustmentFile,
-      conference_brochure_file: conferenceBrochureFile,
-      email_upload_file: emailUploadFile,
-      purpose_scope: formData.purpose_scope || "",
-    });
+  updateFormData(formName, {
+    load_adjustment_file: loadAdjustmentFile,
+    conference_brochure_file: conferenceBrochureFile,
+    email_upload_file: emailUploadFile,
+    purpose_scope: formData.purpose_scope || "",
+  });
 
-    navigate("/fdc-application/step-4")
-  }
+  navigate("/fdc-application/step-4");
+};
+
 
     return (
       <div className="w-full h-full flex flex-col">
@@ -50,7 +51,7 @@ function Application3() {
             <h1 className="text-xl text-[#3D3D3D] font-medium mb-4">
               Details of FDC Facility availed if any
             </h1>
-            <form onSubmit={handleSubmit} className="w-full text-[#7F7F7F] font-normal flex flex-col">
+            <form onSubmit={handleNext} className="w-full text-[#7F7F7F] font-normal flex flex-col">
               <label htmlFor="amount_claimed_date" className="">
                 Amount claimed for year: *
               </label>
@@ -128,36 +129,37 @@ function Application3() {
               />
 
               <p className="font-medium text-[#666666]">
-              Check above details and click next to proceed further
+                Check above details and click next to proceed further
               </p>
               <div className="flex items-center mb-4">
-              <span className="font-light">
-                I have checked the above details
-              </span>
-              <input
-                type="checkbox"
-                name="checked"
-                id="checked"
-                className="ml-2 accent-[#B7202E]"
-                required
-              />
+                <span className="font-light">
+                  I have checked the above details
+                </span>
+                <input
+                  type="checkbox"
+                  name="checked"
+                  id="checked"
+                  className="ml-2 accent-[#B7202E]"
+                  required
+                />
               </div>
-            
+
               <div className="flex justify-center gap-4 mt-3.5">
               <button
-              type="button"
-              onClick={() => navigate("/fdc-application/step-2")}
-              className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
+                  type="button"
+                  onClick={() => navigate("/fdc-application/step-2")}
+                  className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
               >
-              Back
+                Back
               </button>
-            
+
               <button
-              type="submit"
+              type="button"
+              onClick={handleNext}
               className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer"
-              >
+            >
               Next
-              </button>
+            </button>
               </div>
             </form>
           </div>
