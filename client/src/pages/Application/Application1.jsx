@@ -8,7 +8,7 @@ function Application1() {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
-  const { updateFormData, getFormData } = useFormContext();
+  const { updateFormData } = useFormContext();
   const formName = "fdcApplication";
 
   const [userData, setUserData] = useState({

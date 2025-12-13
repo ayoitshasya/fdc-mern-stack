@@ -86,6 +86,30 @@ router.post(
   }
 );
 
+router.post("/fetch-application-by-id", authenticateToken, async(req, res) => {
+  try {
+    const userType = req.user.user_type;
+    const application_id = req.body.application_id;
+    const application = await applicationModel.findById(application_id).populate("submitted_by")
+
+    if(userType == "hod" || userType=="fdc"){
+      console.log(application)
+      return res.status(200).json(application)
+    }
+    else{
+      const e_id = req.user.e_id;
+      const currentUser = await userModel.findOne({ e_id });
+      if(application.submitted_by._id.equals(currentUser._id)){
+        return res.status(200).json(application)
+      }
+      return res.status(403).json({ message: "Unauthorised" });
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({message: "Server Error Occured."})
+  }
+})
 
 router.get("/fetch-applications", authenticateToken, async(req, res) => {
     try {
@@ -108,26 +132,35 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
                 return res.status(404).json({ message: "User not found" });
             }
 
-            const applications = await applicationModel.find({
-                status: { $in: ["pending", "rejected-by-hod"] }
-            })
-            .populate("submitted_by") // populate to access department
-            .then(apps =>
-                apps.filter(app => app.submitted_by.department === currentUser.department)
-            );
+            const applications = await applicationModel.aggregate([
+              {
+                $match: {
+                  status: { $ne: "rejected-by-hod" }
+                }
+              },
+              {
+                $lookup: {
+                  from: "users",
+                  localField: "submitted_by",
+                  foreignField: "_id",
+                  as: "submitted_by"
+                }
+              },
+              { $unwind: "$submitted_by" },
+              {
+                $match: {
+                  "submitted_by.department": currentUser.department
+                }
+              }
+            ]);
+            
+
             return res.status(200).json({ applications });
         }
-        else if(userType == "fdc-convenor"){
+        else if(userType == "fdc"){
 
             const applications = await applicationModel.find({
-                status: { $in: ["approved-by-hod", "rejected-by-convenor"] }
-            });
-            
-            return res.status(200).json({ applications });
-        }
-        else if(userType == "principal"){
-            const applications = await applicationModel.find({
-                status: { $in: ["approved-by-convenor", "rejected-by-principal"] }
+                status: { $in: ["approved-by-hod", "rejected-by-fdc", "approved-by-fdc"] }
             });
             
             return res.status(200).json({ applications });
@@ -146,6 +179,8 @@ router.post('/application-review', authenticateToken, async(req, res) =>{
         const userType = req.user.user_type;
         let updateObject = {};
 
+        
+
         if(userType == "hod"){
 
           approveStatus = "approved-by-hod";
@@ -158,9 +193,14 @@ router.post('/application-review', authenticateToken, async(req, res) =>{
           updateObject.HOD_reason = HOD_reason;
 
         }
-        else if(userType == "fdc-convenor"){
-          approveStatus = "approved-by-convenor";
-          rejectStatus = "rejected-by-convenor";
+        else if(userType == "fdc"){
+          approveStatus = "approved-by-fdc";
+          rejectStatus = "rejected-by-fdc";
+          const { committee_meeting_date, final_remark, amount_sanctioned, od_sanctioned } = req.body;
+          updateObject.date_of_meeting = committee_meeting_date;
+          updateObject.final_recommendation = final_remark;
+          updateObject.amount_sanctioned = amount_sanctioned;
+          updateObject.od_sanctioned = od_sanctioned;
         }
         else{
           return res.status(401).json({message: "User unauthorised."})

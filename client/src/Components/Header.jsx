@@ -18,7 +18,7 @@ function Header() {
         setProfileUser({ fname, lname, profilePicture });
       } catch (err) {
         console.error("Error fetching profile", err);
-        navigate("/login");
+        navigate("/");
       }
     };
 

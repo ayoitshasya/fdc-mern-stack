@@ -4,12 +4,13 @@ import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-function ApplicationPDF() {
+function ReimbursementPDF() {
     const {  getFormData } = useFormContext();
     const navigate = useNavigate();
     const uniqueId = Date.now().toString();
-    const formName = "fdcApplication";
+    const formName = "fdcReimbursement";
     const formData = getFormData(formName);
+    console.log(formData);
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -21,52 +22,7 @@ const academicYear =
     ? `${currentYear - 1}-${currentYear}`
     : `${currentYear}-${currentYear + 1}`;
 
-    const handleSubmit = async () => {
-        const form = new FormData();
-      
-        form.append("purpose", formData.purpose);
-        form.append("org_institution", formData.org_institution);
-        form.append("supporting_org", formData.supporting_org);
-        form.append("duration_from", formData.duration_from);
-        form.append("duration_to", formData.duration_to);
-        form.append("total_days", formData.total_days);
-        form.append("registration_last_day", formData.registration_last_day);
-        form.append("registration_fee", formData.registration_fee);
-        form.append("vacation_period", formData.vacation_period);
-        form.append("ods_required", formData.ods_required);
-      
-        form.append("load_adjustment_file", formData.load_adjustment_file);
-        form.append("conference_brochure_file", formData.conference_brochure_file);
-        if (formData.email_upload_file)
-          form.append("email_upload_file", formData.email_upload_file);
-      
-        form.append("amount_claimed", "0");
-        form.append("year", new Date().getFullYear().toString());
-        form.append("total_ods", "0");
-        form.append("od_year", new Date().getFullYear().toString());
-        form.append("purpose_scope", formData.purpose_scope || "");
-      
-        try {
-          const res = await axios.post(
-            "http://localhost:4000/application/submit-form",
-            form,
-            {
-              withCredentials: true,
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-      
-          alert("Application submitted successfully!");
-          navigate("/");
-        } catch (err) {
-          console.error("Submission error:", err);
-          alert("Something went wrong while submitting the application.");
-        }
-      };
 
-     
 
     const handlePrint = () => {
         const content = document.getElementById("print-section");
@@ -127,6 +83,33 @@ const academicYear =
       };
       
 
+      const handleSubmit = async () => { 
+        
+        const form = new FormData(); 
+        form.append("submitted_by", formData.submitted_by); 
+        form.append("application_id", formData.application_id); 
+        if (formData.registration_amount) form.append("registration_amount", formData.registration_amount); 
+        if (formData.ta_amount) form.append("ta_amount", formData.ta_amount); 
+        if (formData.da_amount) form.append("da_amount", formData.da_amount); 
+        if (formData.attachment) form.append("attachment", formData.attachment);
+
+        try { 
+            const res = await axios.post( "http://localhost:4000/reimbursement/submit-form", 
+            form, 
+            {   
+                withCredentials: true, 
+                headers: { "Content-Type": "multipart/form-data", }, 
+            }); 
+            
+            alert("Application submitted successfully!"); 
+            navigate("/"); 
+        } 
+        
+        catch (error) { 
+            console.error("Submission error:", error); 
+            alert("Something went wrong while submitting the form. Please try again."); 
+        }};
+
   return (
     <div className='w-full min-h-screen bg-[#e8e8e8] flex flex-col items-center'>
         <Header/>
@@ -135,13 +118,13 @@ const academicYear =
                 <div className="w-[16px] h-auto" style={{ backgroundColor: "#B7202E", color:"#B7202E" }}>...</div>
                 <div className="w-[778px] p-8 font-sans bg-white flex flex-col">
                     <div className='p-2 w-fit self-end mb-5 text-sm' style={{border: "1px solid"}}>
-                        Application No. <span className='underline'>{uniqueId}</span> of {academicYear}
+                        Reimbursement Form No. <span className='underline'>{uniqueId}</span> of {academicYear}
                     </div>
                     <div className=" text-center mb-6">
                         <h1 className="text-3xl font-bold">Somaiya Vidyavihar University</h1>
                         <h2 className="text-xl font-semibold">K J Somaiya College of Engineering</h2>
                         <p className="text-sm">
-                        Application to Attend STTP/Symposium/Workshop/Conference/Seminar/NPTEL Course
+                        Form to Reimburse Funds for STTP/Symposium/Workshop/Conference/Seminar/NPTEL Course
                         </p>
                     </div>
 
@@ -185,13 +168,13 @@ const academicYear =
                         </tr>
                         <tr>
                             <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>Date and Duration</th>
-                            <td className="border p-2">From: {formData.duration_from}</td>
-                            <td className="border p-2">To: {formData.duration_to}</td>
+                            <td className="border p-2">From: {formData.date_from}</td>
+                            <td className="border p-2">To: {formData.date_to}</td>
                             <td className="border p-2">Total No. of Days: {formData.total_days}</td>
                         </tr>
                         <tr>
                             <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>Last Date of Registration</th>
-                            <td className="border p-2" colSpan="3">{formData.registration_last_day}</td>
+                            <td className="border p-2" colSpan="3"> {formData.registration_last_day}</td>
                         </tr>
                         <tr>
                             <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>Registration Fee</th>
@@ -199,7 +182,7 @@ const academicYear =
                         </tr>
                         <tr>
                             <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>The Program is During</th>
-                            <td className="border p-2" colSpan="3">{formData.vacation_period} Period</td>
+                            <td className="border p-2" colSpan="3">{formData.vacation_status} Period</td>
                         </tr>
                         </tbody>
                     </table>
@@ -216,8 +199,19 @@ const academicYear =
                         </tbody>
                     </table>
 
-                    <h3 className="font-semibold text-sm mb-2">Purpose/Scope of Attending</h3>
-                    <p className="border p-2 mb-4 text-sm">{formData.purpose_scope}</p>
+                    <h3 className="font-semibold text-sm mb-2">Reimbursement Details</h3>
+                    <table className="table w-full border mb-4 border-collapse text-sm">
+                        <tbody>
+                        <tr>
+                            <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>Amount Paid For Registration</th>
+                            <td className="border p-2">{formData.registration_amount}</td>
+                            <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>TA Amount:</th>
+                            <td className="border p-2">{formData.ta_amount}</td>
+                            <th className="border p-2 text-left" style={{ backgroundColor: "#E9ECEF" }}>DA Amount:</th>
+                            <td className="border p-2">{formData.da_amount}</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                     <div className="signature-section text-sm mt-2">
                         <div className="flex justify-between items-center">
@@ -251,7 +245,7 @@ const academicYear =
         </div>
 
     </div>
-  );
+  )
 }
 
-export default ApplicationPDF;
+export default ReimbursementPDF

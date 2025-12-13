@@ -8,7 +8,7 @@ function Reimbursement1() {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
-  const { updateFormData, getFormData } = useFormContext();
+  const { updateFormData } = useFormContext();
   const formName = "fdcReimbursement";
 
   const [userData, setUserData] = useState({
@@ -25,6 +25,12 @@ function Reimbursement1() {
     if (isChecked) {
       updateFormData(formName, {
         e_id: userData.e_id,
+        fname: userData.fname,
+        lname: userData.lname,
+        department: userData.department,
+        designation: userData.designation,
+        date_of_appointment: userData.date_of_appointment,
+        date_of_appointment_present: userData.date_of_appointment_present
       });
       navigate("/fdc-reimbursement/step-2");
     } else {

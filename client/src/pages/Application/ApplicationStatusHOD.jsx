@@ -3,7 +3,7 @@ import Header from '../../Components/Header';
 import { useNavigate } from 'react-router';
 import { useUser } from '../../context/UserContext';
 
-function ApplicationStatus() {
+function ApplicationStatusHOD() {
   const [applications, setApplications] = useState([]);
   const [applicationsLoading, setApplicationsLoading] = useState(false);
   const [view, setView] = useState('pending'); 
@@ -41,8 +41,8 @@ function ApplicationStatus() {
   let pending;
   let approved;
   if(applications){
-    pending = applications.filter(app => app.status !== "approved-by-fdc");
-    approved = applications.filter(app => app.status === "approved-by-fdc");
+    pending = applications.filter(app => app.status === "pending");
+    approved = applications.filter(app => app.status !== "pending");
   }
   
 
@@ -83,37 +83,35 @@ function ApplicationStatus() {
           </div>
 
 
-          {applicationsLoading ? (
+            {applicationsLoading ? (
             <div className="h-5 w-5 border-3 border-grey border-t-transparent rounded-full animate-spin mr-2 self-center mt-5 mb-3"></div>
             ):
 
             <>
-              {activeList.map((app) => (
-                <div key={app.id} className={`grid grid-cols-5 border-b py-2 text-sm text-[#3D3D3D]`}>
-                  <span>{app._id}</span>
-                  <span>{user?.fname} {user?.lname}</span>
-                  <span>{app.purpose}</span>
-                  <span>{app.status.replace(/-/g, " ")}</span>
-                  <span>{formatDate(app.createdAt)}</span>
-                </div>
-              ))}
+                {activeList.map((app) => (
+                    <div key={app._id} onClick={view === "pending" ? () => navigate(`/application/${app._id}`) : undefined} className='hover:bg-gray-100 grid grid-cols-5 border-b py-2 text-sm text-[#3D3D3D] cursor-pointer'>
+                    <span>{app._id}</span>
+                    <span>{app.submitted_by.fname} {app.submitted_by.lname}</span>
+                    <span>{app.purpose}</span>
+                    <span>{app.status.replace(/-/g, " ")}</span>
+                    <span>{formatDate(app.createdAt)}</span>
+                    </div>
+                ))}
 
-          {activeList.length === 0 && (
-            <div className="text-center text-gray-500 py-6">No applications to display.</div>
-          )}
+                {activeList.length === 0 && (
+                    <div className="text-center text-gray-500 py-6">No applications to display.</div>
+                )}
             </>
             }
 
-          {/* Table Rows */}
           
 
           
           
-          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-application/step-1")}}>New Application</button>
         </div>
       </div>
     </div>
   );
 }
 
-export default ApplicationStatus;
+export default ApplicationStatusHOD;

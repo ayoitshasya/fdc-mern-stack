@@ -2,16 +2,39 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import axios from "axios";
 import { useFormContext } from "../../context/FormContext";
+import { useNavigate } from "react-router-dom";
 
 function Reimbursement4() {
+  const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
-  const { updateFormData } = useFormContext();
+  const { updateFormData, getFormData } = useFormContext();
   const formName = "fdcReimbursement";
+  const formData = getFormData(formName);
+
+  // store only the id string
+  const [userId, setUserId] = useState("");
 
   const [fdcData, setFdcData] = useState({
     amount_claimed: "",
     total_od_availed: "",
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/auth/profile", {
+          withCredentials: true,
+        });
+
+        // set the id string (previous code set res.data.e_id to an object incorrectly)
+        setUserId(res.data?.e_id || "");
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   useEffect(() => {
     const fetchFdcSummary = async () => {
@@ -31,25 +54,27 @@ function Reimbursement4() {
     fetchFdcSummary();
   }, []);
 
-  const handleSubmit = async () => {
+  // renamed from handleSubmit -> handleNext since we're not submitting to server here
+  const handleNext = () => {
     if (!isChecked) {
       alert("Please confirm the details by checking the box.");
       return;
     }
 
-    try {
-      updateFormData(formName, fdcData);
+    // Merge existing formData (from previous steps) with the fetched fdcData
+    // and add submitted_by/userId so final submit can use it later.
+    // If there are conflicting keys, fdcData will override.
+    const combined = {
+      ...formData,
+      ...fdcData,
+      submitted_by: userId,
+    };
 
-      // Optionally post to backend:
-      await axios.post("http://localhost:4000/fdc/submit", fdcData, {
-        withCredentials: true,
-      });
+    // Update the form context so the reimbursement form contains the FDC info too
+    updateFormData(formName, combined);
 
-      alert("Your reimbursement form has been submitted successfully!");
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("Something went wrong while submitting the form. Please try again.");
-    }
+    // Navigate to the next step (change route if you have a different path)
+    navigate("/fdc-reimbursement/step-5");
   };
 
   return (
@@ -98,10 +123,10 @@ function Reimbursement4() {
 
             <button
               type="button"
-              onClick={handleSubmit}
+              onClick={handleNext}
               className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer"
             >
-              Submit
+              Next
             </button>
           </form>
         </div>

@@ -10,9 +10,12 @@ function ReimbursementStatus() {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const response = await fetch('/api/applications'); // isko actual api se replace kardo bhai
+        const response = await fetch('http://localhost:4000/reimbursement/fetch-reimbursement-forms',  {
+          method: 'GET',
+          credentials: 'include',
+        }); // isko actual api se replace kardo bhai
         const data = await response.json();
-        setApplications(data);
+        setApplications(data.forms);
       } catch (error) {
         console.error('Error fetching applications:', error);
       }
@@ -21,8 +24,10 @@ function ReimbursementStatus() {
     fetchApplications();
   }, []);
 
-  const pending = applications.filter(app => app.status === 'Pending');
-  const approved = applications.filter(app => app.status !== 'Pending');
+  console.log(applications)
+
+  const pending = applications.filter(app => app.status === 'pending');
+  const approved = applications.filter(app => app.status !== 'pending');
 
   const activeList = view === 'pending' ? pending : approved;
 
@@ -59,8 +64,8 @@ function ReimbursementStatus() {
 
           {/* Table Rows */}
           {activeList.map((app) => (
-            <div key={app.id} className={`grid ${view === 'pending' ? 'grid-cols-3' : 'grid-cols-4'} border-b py-2 text-sm text-[#3D3D3D]`}>
-              <span>{app.id}</span>
+            <div key={app.application_id} className={`grid ${view === 'pending' ? 'grid-cols-3' : 'grid-cols-4'} border-b py-2 text-sm text-[#3D3D3D]`}>
+              <span>{app.application_id}</span>
               <span>{app.name}</span>
               {view === 'approved' && <span>{app.status}</span>}
               <span>{app.submittedOn}</span>

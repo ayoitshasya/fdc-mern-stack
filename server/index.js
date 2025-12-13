@@ -24,14 +24,11 @@ app.use('/auth', authRouter)
 app.use('/application', applicationRouter)
 app.use('/reimbursement', reimbursementRouter)
 
-
 connectDB();
 
 app.get("/", (req, res) => {
     res.send("API is running...");
 });
-
-
 
 app.listen(PORT, ()=>{
     console.log(`Listening at PORT ${PORT}...`)

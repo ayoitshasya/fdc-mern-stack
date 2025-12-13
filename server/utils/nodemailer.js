@@ -27,7 +27,7 @@ export async function sendStatusMail(applicationId, status, userId) {
       let roleDisplay = "";
       if (status.includes("hod")) roleDisplay = "HOD";
       else if (status.includes("principal")) roleDisplay = "Principal";
-      else if (status.includes("convenor")) roleDisplay = "FDC Convenor";
+      else if (status.includes("fdc")) roleDisplay = "FDC";
       else roleDisplay = "Reviewer";
   
       const statusText = status.startsWith("approved")
@@ -68,10 +68,8 @@ export async function notifyNextReviewer(userType, type) {
     }
 
     if (userType === "hod") {
-      nextRole = "fdc-convenor";
-    } else if (userType === "fdc-convenor") {
-      nextRole = "principal";
-    } else {
+      nextRole = "fdc";
+    }else {
       return;
     }
   
@@ -154,8 +152,7 @@ export async function notifyNextReviewer(userType, type) {
       // Determine role display
       let roleDisplay = "";
       if (status.includes("hod")) roleDisplay = "HOD";
-      else if (status.includes("principal")) roleDisplay = "Principal";
-      else if (status.includes("convenor")) roleDisplay = "FDC Convenor";
+      else if (status.includes("fdc")) roleDisplay = "FDC";
       else roleDisplay = "Reviewer";
   
       const statusText = status.startsWith("approved")

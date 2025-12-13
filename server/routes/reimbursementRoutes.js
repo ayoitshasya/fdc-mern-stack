@@ -4,44 +4,75 @@ import authenticateToken from "../middlewares/authenticateToken.js";
 import { reimbursementModel } from "../models/Reimbursement.js";
 import userModel from "../models/User.js";
 import { saveTempFile, deleteFile, uploadFile } from "../utils/upload.js";
-import { sendStatusMailReimbursement } from "../utils/nodemailer.js";
+import { sendStatusMailReimbursement, notifyNextReviewer } from "../utils/nodemailer.js";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 
-router.post('/submit-form', authenticateToken, 
-
-    upload.fields([
-    { name: "attachment", maxCount: 1 },
-  ]), 
-  
+router.post(
+  '/submit-form',
+  authenticateToken,
+  upload.fields([{ name: "attachment", maxCount: 1 }]),
   async (req, res) => {
     try {
-        const e_id = req.user.e_id;
-        const currentUser = await userModel.findOne({ e_id });
-        if(!currentUser) return res.status(400).json({message: "User Not Found"});   
+      const e_id = req.user.e_id;
+      const currentUser = await userModel.findOne({ e_id });
+      if (!currentUser) return res.status(404).json({ message: "User Not Found" });
 
-        const timestamp = Date.now();
+      const timestamp = Date.now();
+      let receiptZipUrl = null;
+      let receiptPath;
 
-        const loadPath = await saveTempFile(
-            req.files.attachment[0].buffer,
-            `${timestamp}_attachment.pdf`
+      if (
+        req.files.attachment &&
+        req.files.attachment.length > 0
+      ) {
+        receiptPath = await saveTempFile(
+          req.files.attachment[0].buffer,
+          `${timestamp}_receipts.zip`
+        );
+
+        try {
+          receiptZipUrl = await uploadFile(
+            receiptPath,
+            "fdc/reimbursements",
+            "raw"
           );
-
-        const reimbursementData = {
-            submitted_by: currentUser._id,
-            application_id: req.body.application_id,
-            registration_amount: req.body.registration_amount,
-            ta_amount: req.body.ta_amount,
-            da_amount: req.body.da_amount,
-            status: "pending",
-
+        } finally {
+          try {
+            if (receiptPath) await deleteFile(receiptPath);
+          } catch (cleanupErr) {
+            console.error("Failed to delete temp receipt file:", cleanupErr);
+          }
         }
+      }
+
+      const reimbursementData = {
+        submitted_by: currentUser._id,
+        application_id: req.body.application_id,
+        registration_amount: req.body.registration_amount,
+        ta_amount: req.body.ta_amount,
+        da_amount: req.body.da_amount,
+        status: "pending",
+        ...(receiptZipUrl && { attachment: receiptZipUrl }),
+      };
+
+      const reimbursement = await reimbursementModel.create(reimbursementData);
+
+      // ✅ your response still goes here
+      res.status(201).json({
+        message: "Reimbursement request submitted successfully",
+        reimbursement,
+      });
+
     } catch (error) {
-        
+      console.error("Error submitting reimbursement:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
-})
+  }
+);
+
 
 
 router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
@@ -66,7 +97,7 @@ router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
             }
 
             const forms = await reimbursementModel.find({
-                status: { $in: ["pending", "rejected-by-hod"] }
+                status: { $in: ["pending", "rejected-by-hod", "approved-by-hod", "approved-by-fdc", "rejected-by-fdc"] }
             })
             .populate("submitted_by") // populate to access department
             .then(apps =>
@@ -74,20 +105,16 @@ router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
             );
             return res.status(200).json({ forms });
         }
-        else if(userType == "fdc-convenor"){
+        else if(userType == "fdc"){
 
             const forms = await reimbursementModel.find({
-                status: { $in: ["approved-by-hod", "rejected-by-convenor"] }
+                status: { $in: ["approved-by-hod", "rejected-by-fdc", "approved-by-fdc"] }
             });
             
             return res.status(200).json({ forms });
         }
-        else if(userType == "principal"){
-            const forms = await reimbursementModel.find({
-                status: { $in: ["approved-by-convenor", "rejected-by-principal"] }
-            });
-            
-            return res.status(200).json({ forms });
+        else{
+          return res.status(400).json("Unauthorized.");
         }
     } catch (error) {
         console.log(error);
@@ -108,19 +135,16 @@ router.post('/reimbursement-review', authenticateToken, async(req, res) =>{
           rejectStatus = "rejected-by-hod";
         }
 
-        else if(userType == "fdc-convenor"){
-          approveStatus = "approved-by-convenor";
-          rejectStatus = "rejected-by-convenor";
+        else if(userType == "fdc"){
+          approveStatus = "approved-by-fdc";
+          rejectStatus = "rejected-by-fdc";
         }
 
-        else if(userType == "principal"){
-          approveStatus = "approved-by-principal";
-          rejectStatus = "rejected-by-principal";
-        }else{
+        else{
           return res.status(401).json({message: "User unauthorised."})
         }
 
-        const { reimbursementId, status } = req.body;
+        const { reimbursementId, status, HOD_reason } = req.body;
         if (!reimbursementId || !status) {
           return res.status(400).json({ message: "Missing required fields." });
         }
@@ -134,20 +158,36 @@ router.post('/reimbursement-review', authenticateToken, async(req, res) =>{
           return res.status(400).json({ message: "Invalid status. Use 'approve' or 'disapprove'." });
         }
 
+        const updateFields = {
+          status: finalStatus,
+        };
+    
+        // Only HOD can set HOD_reason (and only include it if provided)
+        if (userType === 'hod' && typeof HOD_reason === 'string' && HOD_reason.trim() !== '') {
+          updateFields.HOD_reason = HOD_reason.trim();
+        }
+
         const updatedForm = await reimbursementModel.findByIdAndUpdate(
           reimbursementId,
-          { $set: {status: finalStatus} },
+          { $set: updateFields },
           { new: true }
         );
     
         if (!updatedForm) {
           return res.status(404).json({ message: "Reimbursement Form not found." });
         }
-        await sendStatusMailReimbursement(reimbursementId, finalStatus, updatedForm.submitted_by);
+        
+        
+        try {
+          await sendStatusMailReimbursement(reimbursementId, finalStatus, updatedForm.submitted_by);
+        } catch (mailErr) {
+          console.error('Error sending status email for reimbursement:', mailErr);
+        }
+
         if (status === "approve") {
           await notifyNextReviewer(userType, "reimbursement");
         }
-        res.status(200).json({ message: `Application ${finalStatus}.`, application: updatedApp });
+        res.status(200).json({ message: `Reimbursement Form ${finalStatus}.`, form: updatedForm });
     
 
 
@@ -156,5 +196,33 @@ router.post('/reimbursement-review', authenticateToken, async(req, res) =>{
         res.status(501).json({message: "Server Error."})
     }
 })
+
+
+router.post("/fetch-reimbursement-by-id", authenticateToken, async(req, res) => {
+  try {
+
+    const userType = req.user.user_type;
+    const reimbursement_id = req.body.reimbursement_id;
+    const form = await reimbursementModel.findById(reimbursement_id).populate("submitted_by")
+
+    if(userType == "hod" || userType=="fdc"){
+      
+      return res.status(200).json(form)
+    }
+    else{
+      const e_id = req.user.e_id;
+      const currentUser = await userModel.findOne({ e_id });
+      if(application.submitted_by._id.equals(currentUser._id)){
+        return res.status(200).json(form)
+      }
+      return res.status(403).json({ message: "Unauthorised" });
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({message: "Server Error Occured."})
+  }
+})
+
 
 export default router;

@@ -56,7 +56,6 @@ const applicationSchema = new Schema({
     },
     email_upload_path:{
         type:String,
-        required:true
     },
     amount_claimed:{
         type:String,
@@ -98,10 +97,10 @@ const applicationSchema = new Schema({
     },
     status:{
         type: String,
-        enum: ["pending", "approved-by-hod", "approved-by-convenor", "approved-by-principal", "rejected-by-hod", "rejected-by-convenor", "rejected-by-principal"],
+        enum: ["pending", "approved-by-hod", "approved-by-fdc", "approved-by-principal", "rejected-by-hod", "rejected-by-fdc", "rejected-by-principal"],
         required: true,
         default: "pending"
-    }
+    },
 
 
 }, {timestamps: { createdAt: true, updatedAt: false }})

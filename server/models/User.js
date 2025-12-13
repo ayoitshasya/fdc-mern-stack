@@ -64,7 +64,7 @@ const userSchema = new Schema(
     },
     user_type: {
       type: String,
-      enum: ['employee', 'hod', 'principal', 'fdc-convenor', 'fdc-coordinator'],
+      enum: ['employee', 'hod', 'fdc', 'fdc-coordinator'],
       required: true,
     },
   },

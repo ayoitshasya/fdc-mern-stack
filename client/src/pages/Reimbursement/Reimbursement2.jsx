@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import axios from "axios";
+import { useFormContext } from "../../context/FormContext";
+import { useNavigate } from "react-router-dom";
 
 function Reimbursement2() {
+  const { formReady, updateFormData, getFormData } = useFormContext();
+  const navigate = useNavigate();
+
+  const formName = "fdcReimbursement";
+  const formData = getFormData(formName);
+
+
   const [approvedApplications, setApprovedApplications] = useState([]);
   const [selectedAppId, setSelectedAppId] = useState("");
 
   useEffect(() => {
     const fetchApprovedApplications = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/fdc/approved", {
+        const res = await axios.get("http://localhost:4000/application/fetch-applications", {
           withCredentials: true,
         });
-
-        setApprovedApplications(res.data); // Make sure res.data is an array of approved apps (gpt baba ne bola)
+        console.log(res.data.applications)
+        const apps = res.data.applications.filter((app)=> app.status === "approved-by-fdc")
+        setApprovedApplications(apps); 
       } catch (err) {
         console.error("Error fetching approved applications:", err);
       }
@@ -22,16 +32,19 @@ function Reimbursement2() {
     fetchApprovedApplications();
   }, []);
 
-  const handleNext = () => {
+  const handleNext = (e) => {
     if (!selectedAppId) {
       alert("Please select an approved application to proceed.");
       return;
     }
 
-    // handle storing the selected application if needed
-    console.log("Selected Application ID:", selectedAppId);
-    // navigate or update context here if needed
+    e.preventDefault();
+    navigate("/fdc-reimbursement/step-3")
   };
+
+  if (!formReady) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -48,14 +61,22 @@ function Reimbursement2() {
           <select
             className="w-full border rounded-lg p-2 outline-none mb-6 bg-white text-[#3D3D3D]"
             value={selectedAppId}
-            onChange={(e) => setSelectedAppId(e.target.value)}
+            onChange={(e) => {
+              setSelectedAppId(e.target.value);  
+              updateFormData(formName, {application_id: e.target.value});  
+            }}
           >
             <option value="" disabled>Select an approved application</option>
-            {approvedApplications.map((app) => (
+            {(approvedApplications.length > 0) ? 
+            approvedApplications.map((app) => (
               <option key={app._id} value={app._id}>
-                {app.title || `Application #${app._id}`}
+                {app.purpose + ` Application #${app._id}`} 
               </option>
-            ))}
+            ))
+            :
+              <>
+              </>
+            }
           </select>
 
           <button

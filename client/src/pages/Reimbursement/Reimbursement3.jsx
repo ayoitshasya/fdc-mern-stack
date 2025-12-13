@@ -7,39 +7,64 @@ import { useFormContext } from "../../context/FormContext";
 function Reimbursement3() {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
-  const { updateFormData } = useFormContext();
+  const { updateFormData, getFormData } = useFormContext();
   const formName = "fdcReimbursement";
+  const formData = getFormData(formName);
 
   const [programData, setProgramData] = useState({
-    institution: "",
     date_from: "",
     date_to: "",
     total_days: "",
     vacation_status: "",
     od_days: "",
+    purpose: "",
+    org_institution: "",
+    supporting_org: "",
+    registration_fee: "",
   });
 
   const [formInputs, setFormInputs] = useState({
-    registrationAmount: "",
-    ta: "",
-    da: "",
+    registration_amount: "",
+    ta_amount: "",
+    da_amount: "",
     amountSanctioned: "",
     attachment: null,
   });
 
+  const formatDateToDDMMYYYY = (isoDate) => {
+    if (!isoDate) return "";
+    const date = new Date(isoDate);
+    if (isNaN(date)) return "";
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   useEffect(() => {
     const fetchProgramDetails = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/fdc/reimbursement-details", {
-          withCredentials: true,
-        });
+        if (!formData?.application_id) return;
+
+        const res = await axios.post(
+          "http://localhost:4000/application/fetch-application-by-id",
+          { application_id: formData.application_id },
+          { withCredentials: true }
+        );
+
+        console.log("fetch program response:", res.data);
+
         setProgramData({
-          institution: res.data.institution || "",
-          date_from: res.data.date_from || "",
-          date_to: res.data.date_to || "",
+          org_institution: res.data.org_institution || "",
+          date_from: formatDateToDDMMYYYY(res.data.duration_from),
+          date_to: formatDateToDDMMYYYY(res.data.duration_to),
           total_days: res.data.total_days || "",
-          vacation_status: res.data.vacation_status || "",
-          od_days: res.data.od_days || "",
+          vacation_status: res.data.vacation_period || "",
+          od_days: res.data.ods_required || "",
+          purpose: res.data.purpose || "",
+          supporting_org: res.data.supporting_org || "",
+          registration_fee: res.data.registration_fee || "",
+          registration_last_day: formatDateToDDMMYYYY(res.data.registration_last_day) || ""
         });
       } catch (err) {
         console.error("Error fetching program details:", err);
@@ -47,7 +72,7 @@ function Reimbursement3() {
     };
 
     fetchProgramDetails();
-  }, []);
+  }, [formData?.application_id]); // run again if application_id changes
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -62,7 +87,18 @@ function Reimbursement3() {
       alert("Please confirm the details by checking the box.");
       return;
     }
-    updateFormData(formName, formInputs);
+
+    // MERGE programData + formInputs so reimbursement form stores both
+    // formInputs should override programData if any keys collide
+    const combinedData = {
+      ...programData,
+      ...formInputs,
+    };
+
+    // If you want to keep the raw program object too:
+    // const combinedData = { program: programData, reimburse: formInputs };
+
+    updateFormData(formName, combinedData);
     navigate("/fdc-reimbursement/step-4");
   };
 
@@ -80,20 +116,20 @@ function Reimbursement3() {
             <input
               type="text"
               className="w-full border rounded-lg p-2 bg-gray-100 mb-3"
-              value={programData.institution}
+              value={programData.org_institution}
               readOnly
             />
 
             <label className="mb-1">Date and Duration of program attended from:</label>
             <div className="flex gap-4 mb-3">
               <input
-                type="date"
+                type="text"
                 className="w-full border rounded-lg p-2 bg-gray-100"
                 value={programData.date_from || ""}
                 readOnly
               />
               <input
-                type="date"
+                type="text"
                 className="w-full border rounded-lg p-2 bg-gray-100"
                 value={programData.date_to || ""}
                 readOnly
@@ -128,9 +164,9 @@ function Reimbursement3() {
             <label className="mb-1">Amount paid for registration (₹):</label>
             <input
               type="number"
-              name="registrationAmount"
+              name="registration_amount"
               className="w-full border rounded-lg p-2 mb-3"
-              value={formInputs.registrationAmount}
+              value={formInputs.registration_amount}
               onChange={handleInputChange}
               min="0"
             />
@@ -138,9 +174,9 @@ function Reimbursement3() {
             <label className="mb-1">TA (₹):</label>
             <input
               type="number"
-              name="ta"
+              name="ta_amount"
               className="w-full border rounded-lg p-2 mb-3"
-              value={formInputs.ta}
+              value={formInputs.ta_amount}
               onChange={handleInputChange}
               min="0"
             />
@@ -148,9 +184,9 @@ function Reimbursement3() {
             <label className="mb-1">DA (₹):</label>
             <input
               type="number"
-              name="da"
+              name="da_amount"
               className="w-full border rounded-lg p-2 mb-3"
-              value={formInputs.da}
+              value={formInputs.da_amount}
               onChange={handleInputChange}
               min="0"
             />
@@ -172,7 +208,7 @@ function Reimbursement3() {
             <input
               type="file"
               name="attachment"
-              accept=".pdf, .doc, .docx, .png, .jpeg, .jpg"
+              accept=".zip"
               className="w-full border rounded-lg p-2 mb-6"
               onChange={handleInputChange}
             />
