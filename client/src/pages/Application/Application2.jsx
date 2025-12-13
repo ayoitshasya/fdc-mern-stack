@@ -33,10 +33,11 @@ function Application2() {
     }
   }, [fromDate, toDate]);
 
-  const handleSubmit = (e) => {
+  const handleNext = (e) => {
     e.preventDefault();
     navigate("/fdc-application/step-3");
   };
+
 
   if (!formReady) {
     return <div>Loading...</div>;
@@ -51,7 +52,7 @@ function Application2() {
             Details about STTPS/Symposium/Workshop/Conference/Seminar/NPTEL
             Course
           </h1>
-          <form onSubmit={handleSubmit} className="w-full text-[#7F7F7F] font-normal flex flex-col">
+          <form onSubmit={handleNext} className="w-full text-[#7F7F7F] font-normal flex flex-col">
             <label htmlFor="purpose" className="">
               Select purpose for FDC: *
             </label>
@@ -257,7 +258,8 @@ function Application2() {
             </button>
             
             <button
-              type="submit"
+              type="button"
+              onClick={handleNext}
               className="rounded-4xl bg-[#B7202E] text-white w-fit self-center p-2 px-40 cursor-pointer"
             >
               Next

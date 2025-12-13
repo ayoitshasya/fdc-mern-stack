@@ -82,20 +82,20 @@ function ApplicationHOD() {
                 <option value="Not-Recommended">Not-Recommended</option>
             </select>
 
-            <div className='flex items-center justify-between mb-4'>
+            <div className='flex items-center justify-between mb-2'>
                 <label htmlFor="checkedLoadAdjustment" className='text-[#3D3D3D] text-sm md:text-base mt-2 mb-1'>
-                I have checked the Load Adjustment Form *
+                I have checked load adjustment form *
                 </label>
                 <input type="checkbox" name="checkedLoadAdjustment" id="checkedLoadAdjustment" className='accent-[#B7202E] w-5 h-5' checked={loadChecked} onChange={(e) => setLoadChecked(e.target.checked)}/>
             </div>
 
             <div className='flex items-center justify-between mb-4'>
-                <label htmlFor="checkedLoadAdjustment" className='text-[#3D3D3D] text-sm md:text-base mt-0 mb-1'>
+                <label htmlFor="checkedLoadAdjustment" className='text-[#3D3D3D] text-sm md:text-base mt-2 mb-1'>
                 I have checked brochure *
                 </label>
                 <input type="checkbox" name="checkedLoadAdjustment" id="checkedLoadAdjustment" className='accent-[#B7202E] w-5 h-5' checked={brochureChecked} onChange={(e) => setBrochureChecked(e.target.checked)}/>
             </div>
-
+              
             <label htmlFor="reason">Reason for Recommendation/Non-Recommendation *</label>
             <input type="text" name='reason' className='w-full border rounded-lg p-1 outline-none mt-1 mb-2' value={reason} onChange={(e)=>{setReason(e.target.value)}}/>
             
