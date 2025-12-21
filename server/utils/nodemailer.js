@@ -57,51 +57,84 @@ export async function sendStatusMail(applicationId, status, userId) {
 
 
 
-export async function notifyNextReviewer(userType, type) {
-    let nextRole;
+  export async function notifyNextReviewer(userType, type, department, application) {
     let mailType;
-    if(type == "application"){
-      mailType = "Application"
-    }
-    else if(type === "reimbursement"){
-      mailType = "Reimbursement Form"
-    }
-
-    if (userType === "hod") {
-      nextRole = "fdc";
-    }else {
+  
+    if (type === "application") {
+      mailType = "Application";
+    } else if (type === "reimbursement") {
+      mailType = "Reimbursement Form";
+    } else {
       return;
     }
   
     try {
-      const reviewers = await userModel.find({ user_type: nextRole });
   
-      if (!reviewers.length) {
-        console.log(`No reviewers with role ${nextRole} found.`);
+      /* =======================
+         CASE 1: HOD → FDC
+      ======================= */
+      if (userType === "hod") {
+        const reviewers = await userModel.find({ user_type: "fdc" });
+  
+        if (!reviewers.length) {
+          console.log("No FDC reviewers found.");
+          return;
+        }
+  
+        for (const reviewer of reviewers) {
+          await transporter.sendMail({
+            from: `"FDC Portal" <${process.env.MAIL_USER}>`,
+            to: reviewer.email,
+            subject: `New FDC ${mailType} Awaiting Your Review`,
+            html: `
+              <p>Hello ${reviewer.fname || "Reviewer"},</p>
+              <p>A new ${mailType} has been approved by HOD and is awaiting your review.</p>
+              <p>Please log in to the FDC portal to proceed.</p>
+              <p>Regards,<br/>KJSSE FDC Admin</p>
+            `,
+          });
+        }
+  
         return;
       }
   
-      for (const reviewer of reviewers) {
-        const mailOptions = {
+      /* =======================
+         CASE 2: FDC → HOD (same department)
+      ======================= */
+      if (userType === "fdc") {
+        const hod = await userModel.findOne({
+          user_type: "hod",
+          department: department
+        });
+  
+        if (!hod) {
+          console.log(`No HOD found for department ${department}`);
+          return;
+        }
+  
+        const applicantName = `${application.submitted_by.fname} ${application.submitted_by.lname}`;
+  
+        await transporter.sendMail({
           from: `"FDC Portal" <${process.env.MAIL_USER}>`,
-          to: reviewer.email,
-          subject: `New FDC ${mailType} Awaiting Your Review`,
+          to: hod.email,
+          subject: `${mailType} Approved by FDC`,
           html: `
-            <p>Hello ${reviewer.fname || "Reviewer"},</p>
-            <p>A new ${mailType} has been approved at a previous level and is now awaiting your review.</p>
-            <p>Please log in to the FDC portal to proceed.</p>
+            <p>Hello ${hod.fname || "HOD"},</p>
+            <p>The ${mailType} submitted by <strong>${applicantName}</strong> has been approved by the FDC.</p>
+            <p><strong>Form ID:</strong> ${application._id}</p>
+            <p>Please log in to the portal for details.</p>
             <p>Regards,<br/>KJSSE FDC Admin</p>
           `,
-        };
+        });
   
-        await transporter.sendMail(mailOptions);
-        console.log(`Notification sent to ${reviewer.email}`);
+        return;
       }
   
     } catch (err) {
       console.error("Error sending reviewer notification:", err);
     }
   }
+  
   
 
   export async function notifyHOD(e_id, department) {

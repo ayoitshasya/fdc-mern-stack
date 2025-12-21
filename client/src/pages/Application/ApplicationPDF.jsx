@@ -1,15 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Header from '../../Components/Header';
 import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function ApplicationPDF() {
-    const {  getFormData } = useFormContext();
+    const {  getFormData, resetFormData } = useFormContext();
     const navigate = useNavigate();
     const uniqueId = Date.now().toString();
     const formName = "fdcApplication";
     const formData = getFormData(formName);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -22,6 +23,9 @@ const academicYear =
     : `${currentYear}-${currentYear + 1}`;
 
     const handleSubmit = async () => {
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
         const form = new FormData();
       
         form.append("purpose", formData.purpose);
@@ -58,11 +62,14 @@ const academicYear =
             }
           );
       
+          resetFormData("fdcApplication");
           alert("Application submitted successfully!");
           navigate("/");
         } catch (err) {
           console.error("Submission error:", err);
           alert("Something went wrong while submitting the application.");
+        }finally {
+          setIsSubmitting(false);
         }
       };
 
@@ -243,10 +250,15 @@ const academicYear =
                     Print
                     </button>
                     <button
-                    className="bg-gray-600 text-white px-6 py-2 rounded-4xl cursor-pointer"
-                    onClick={handleSubmit}
-                    > 
-                    Submit
+                      className={`bg-gray-600 text-white px-6 py-2 rounded-4xl cursor-pointer flex items-center gap-2
+                        ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting && (
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                      )}
+                      {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
         </div>
 

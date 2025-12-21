@@ -3,7 +3,6 @@ import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFormContext } from "../../context/FormContext";
-import { useNavigate } from "react-router-dom";
 
 function Reimbursement2() {
   const { formReady, updateFormData, getFormData } = useFormContext();
@@ -15,7 +14,6 @@ function Reimbursement2() {
 
   const [approvedApplications, setApprovedApplications] = useState([]);
   const [selectedAppId, setSelectedAppId] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApprovedApplications = async () => {

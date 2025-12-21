@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../Components/Header';
 import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function ReimbursementPDF() {
-    const {  getFormData } = useFormContext();
+    const {  getFormData, resetFormData } = useFormContext();
     const navigate = useNavigate();
     const uniqueId = Date.now().toString();
     const formName = "fdcReimbursement";
     const formData = getFormData(formName);
-    console.log(formData);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -84,7 +84,9 @@ const academicYear =
       
 
       const handleSubmit = async () => { 
-        
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+
         const form = new FormData(); 
         form.append("submitted_by", formData.submitted_by); 
         form.append("application_id", formData.application_id); 
@@ -100,7 +102,7 @@ const academicYear =
                 withCredentials: true, 
                 headers: { "Content-Type": "multipart/form-data", }, 
             }); 
-            
+            resetFormData("fdcReimbursement");
             alert("Application submitted successfully!"); 
             navigate("/"); 
         } 
@@ -108,6 +110,8 @@ const academicYear =
         catch (error) { 
             console.error("Submission error:", error); 
             alert("Something went wrong while submitting the form. Please try again."); 
+        }finally {
+            setIsSubmitting(false);
         }};
 
   return (
@@ -237,11 +241,17 @@ const academicYear =
                     Print
                     </button>
                     <button
-                    className="bg-gray-600 text-white px-6 py-2 rounded-4xl cursor-pointer"
-                    onClick={handleSubmit}
-                    > 
-                    Submit
+                        className={`bg-gray-600 text-white px-6 py-2 rounded-4xl cursor-pointer flex items-center gap-2
+                            ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting && (
+                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        )}
+                        {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
+
         </div>
 
     </div>

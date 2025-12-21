@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
+import { useFormContext } from "../context/FormContext";
 
 function Header() {
+  const { resetFormData } = useFormContext();
   const {setUser, setLoggedIn, setLoading} = useUser();
   const navigate = useNavigate();
   const [profileUser, setProfileUser] = useState({ fname: "", lname: "", profilePicture: "" });
@@ -31,6 +33,8 @@ function Header() {
       setUser();
       setLoading(false);
       setLoggedIn(false);
+      resetFormData("fdcApplication");
+      resetFormData("fdcReimbursement");
       navigate("/");
     } catch (err) {
       console.error("Logout failed", err);

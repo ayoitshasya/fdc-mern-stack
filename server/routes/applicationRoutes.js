@@ -226,14 +226,14 @@ router.post('/application-review', authenticateToken, async(req, res) =>{
           applicationId,
           { $set: updateObject },
           { new: true }
-        );
+        ).populate("submitted_by");
     
         if (!updatedApp) {
           return res.status(404).json({ message: "Application not found." });
         }
-        await sendStatusMail(applicationId, finalStatus, updatedApp.submitted_by);
+        await sendStatusMail(applicationId, finalStatus, updatedApp.submitted_by._id);
         if (status === "approve") {
-          await notifyNextReviewer(userType, "application");
+          await notifyNextReviewer(userType, "application", updatedApp.submitted_by.department, updatedApp);
         }
         res.status(200).json({ message: `Application ${finalStatus}.`, application: updatedApp });
     
