@@ -47,6 +47,15 @@ router.post("/register-admins", authenticateToken ,async (req, res) => {  // Cre
 router.post("/register", async (req, res) => {
   try {
     const { fname, lname, e_id, email, password, department, designation, date_of_appointment, present_appointment } = req.body;
+
+    const somaiyaEmailRegex = /^[a-zA-Z0-9._%+-]+@somaiya\.edu$/;
+
+    if (!somaiyaEmailRegex.test(email)) {
+      return res.status(400).json({
+        message: "Only somaiya.edu email addresses are allowed"
+      });
+    }
+    
     let user_type = "employee";
     const existing = await User.findOne({ e_id });
     const existingmail = await User.findOne({ email });
@@ -164,7 +173,7 @@ router.get("/google/callback", async (req, res) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(401).send("No account associated with this Google account.");
+    return res.status(401).send("No account associated with this Google account. Kindly Signup First.");
   }
 
   // Save profile picture to DB if not already saved or changed
