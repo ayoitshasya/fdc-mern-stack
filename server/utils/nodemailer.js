@@ -137,6 +137,32 @@ export async function sendStatusMail(applicationId, status, userId) {
   
   
 
+  export async function notifyHODReimbursement(e_id, department) {
+    try {
+      const hods = await userModel.find({ user_type: "hod", department });
+      if (!hods.length) {
+        console.log(`No HODs found for department ${department}`);
+        return;
+      }
+      for (const hod of hods) {
+        await transporter.sendMail({
+          from: `"FDC Portal" <${process.env.MAIL_USER}>`,
+          to: hod.email,
+          subject: `New FDC Reimbursement Request Requires Your Review`,
+          html: `
+            <p>Hello ${hod.fname || "HOD"},</p>
+            <p>A reimbursement request submitted by employee ID <b>${e_id}</b> from your department is awaiting your review.</p>
+            <p>Please log in to the FDC portal to take necessary action.</p>
+            <p>Regards,<br/>KJSSE FDC Admin</p>
+          `,
+        });
+        console.log(`Reimbursement notification sent to HOD: ${hod.email}`);
+      }
+    } catch (error) {
+      console.error("Error sending reimbursement notification to HOD:", error);
+    }
+  }
+
   export async function notifyHOD(e_id, department) {
     try {
       const hods = await userModel.find({

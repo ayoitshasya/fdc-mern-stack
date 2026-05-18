@@ -4,7 +4,7 @@ import authenticateToken from "../middlewares/authenticateToken.js";
 import { reimbursementModel } from "../models/Reimbursement.js";
 import userModel from "../models/User.js";
 import { saveTempFile, deleteFile, uploadFile } from "../utils/upload.js";
-import { sendStatusMailReimbursement, notifyNextReviewer } from "../utils/nodemailer.js";
+import { sendStatusMailReimbursement, notifyNextReviewer, notifyHODReimbursement } from "../utils/nodemailer.js";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -59,8 +59,8 @@ router.post(
       };
 
       const reimbursement = await reimbursementModel.create(reimbursementData);
+      await notifyHODReimbursement(e_id, currentUser.department);
 
-      // ✅ your response still goes here
       res.status(201).json({
         message: "Reimbursement request submitted successfully",
         reimbursement,
@@ -172,21 +172,20 @@ router.post('/reimbursement-review', authenticateToken, async(req, res) =>{
           reimbursementId,
           { $set: updateFields },
           { new: true }
-        );
-    
+        ).populate({ path: "submitted_by" }).populate({ path: "application_id" });
+
         if (!updatedForm) {
           return res.status(404).json({ message: "Reimbursement Form not found." });
         }
-        
-        
+
         try {
-          await sendStatusMailReimbursement(reimbursementId, finalStatus, updatedForm.submitted_by);
+          await sendStatusMailReimbursement(reimbursementId, finalStatus, updatedForm.submitted_by._id);
         } catch (mailErr) {
           console.error('Error sending status email for reimbursement:', mailErr);
         }
 
         if (status === "approve") {
-          await notifyNextReviewer(userType, "reimbursement");
+          await notifyNextReviewer(userType, "reimbursement", updatedForm.submitted_by.department, updatedForm);
         }
         res.status(200).json({ message: `Reimbursement Form ${finalStatus}.`, form: updatedForm });
     
