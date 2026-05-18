@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
 import { useNavigate } from 'react-router';
+import { useFormContext } from '../../context/FormContext';
 
 function ReimbursementStatus() {
   const [applications, setApplications] = useState([]);
   const [view, setView] = useState('pending');
   const navigate = useNavigate();
+  const { resetFormData } = useFormContext();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -84,7 +86,7 @@ function ReimbursementStatus() {
             Back
           </button>
 
-          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white px-30 p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-reimbursement/step-1")}}>New Reimbursement</button>
+          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white px-30 p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => { resetFormData("fdcReimbursement"); navigate("/fdc-reimbursement/step-1"); }}>New Reimbursement</button>
         </div>
         </div>
       </div>

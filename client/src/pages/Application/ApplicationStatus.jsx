@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
 import { useNavigate } from 'react-router';
 import { useUser } from '../../context/UserContext';
+import { useFormContext } from '../../context/FormContext';
 
 function ApplicationStatus() {
   const [applications, setApplications] = useState([]);
   const [applicationsLoading, setApplicationsLoading] = useState(false);
   const [view, setView] = useState('pending'); 
   const navigate = useNavigate();
-  const {user} = useUser()
+  const {user} = useUser();
+  const { resetFormData } = useFormContext();
 
   const formatDate = d => {
     const date = new Date(d);
@@ -115,7 +117,7 @@ function ApplicationStatus() {
             Back
           </button>
           
-          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white px-30 p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => {navigate("/fdc-application/step-1")}}>New Application</button>
+          <button className='rounded-4xl w-fit self-center mt-5 bg-[#B7202E] text-white px-30 p-3 font-semibold cursor-pointer hover:bg-[#d23646] duration-200' onClick={() => { resetFormData("fdcApplication"); navigate("/fdc-application/step-1"); }}>New Application</button>
         </div>
         </div>
       </div>
