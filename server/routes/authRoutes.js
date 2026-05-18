@@ -223,17 +223,11 @@ router.get("/google/callback", async (req, res) => {
 });
 
 
-// Nodemailer transporter using Google OAuth2
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    type: "OAuth2",
-    user: process.env.EMAIL_USERNAME,
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-    // Use a function that returns a promise resolving to access token
-    accessToken: async () => await getAccessToken(),
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
   },
 });
 
@@ -243,40 +237,64 @@ router.post("/forgot-password", async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(200).json({ message: "If that email is registered, a reset link has been sent." });
     }
 
     const resetToken = crypto.randomBytes(20).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
-    const mailOptions = {
-      from: `"KJSCE FDC Portal" <${process.env.EMAIL_USERNAME}>`,
+    await transporter.sendMail({
+      from: `"KJSCE FDC Portal" <${process.env.MAIL_USER}>`,
       to: email,
       subject: "Password Reset Request — KJSCE FDC Portal",
       html: `
-        <p>Hi there,</p><br>
-        <p>We received a request to reset the password for your KJSCE FDC Portal account. Click the link below to proceed:</p>
-        <p><a href="http://localhost:5173/reset-password/${resetToken}">Reset Password</a></p><br>
-        <p>This link expires in 1 hour.</p>
-        <p>If you didn’t request this, you can safely ignore this email.</p><br>
-        <p>Regards,</p>
-        <p>KJSCE FDC Portal Team</p>
+        <!DOCTYPE html>
+        <html><head><meta charset="UTF-8"/></head>
+        <body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,sans-serif;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;padding:30px 0;">
+            <tr><td align="center">
+              <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                <tr><td style="background-color:#B7202E;padding:24px 32px;">
+                  <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:700;">K J Somaiya College of Engineering</h1>
+                  <p style="margin:4px 0 0;color:#f5c6cb;font-size:13px;">Faculty Development Cell (FDC) Portal</p>
+                </td></tr>
+                <tr><td style="padding:32px;">
+                  <p style="font-size:16px;color:#333333;margin:0 0 8px;">Hi ${user.fname || "there"},</p>
+                  <p style="font-size:14px;color:#555555;line-height:1.6;margin:0 0 24px;">
+                    We received a request to reset the password for your KJSCE FDC Portal account. Click the button below to set a new password.
+                  </p>
+                  <div style="text-align:center;margin:0 0 24px;">
+                    <a href="http://localhost:5173/reset-password/${resetToken}"
+                       style="display:inline-block;background-color:#B7202E;color:#ffffff;text-decoration:none;padding:12px 32px;border-radius:24px;font-size:14px;font-weight:700;">
+                      Reset Password
+                    </a>
+                  </div>
+                  <p style="font-size:13px;color:#777777;margin:0 0 8px;">This link expires in <strong>1 hour</strong>.</p>
+                  <p style="font-size:13px;color:#777777;margin:0;">If you didn’t request this, you can safely ignore this email.</p>
+                  <p style="font-size:13px;color:#777777;margin:24px 0 0;">
+                    Warm regards,<br/>
+                    <strong style="color:#333333;">KJSCE Faculty Development Cell</strong>
+                  </p>
+                </td></tr>
+                <tr><td style="background-color:#f8f8f8;padding:16px 32px;border-top:1px solid #e0e0e0;">
+                  <p style="margin:0;font-size:12px;color:#888888;text-align:center;">
+                    This is an automated notification from the KJSCE FDC Portal. Please do not reply to this email.
+                  </p>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+        </body></html>
       `,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending email:", error);
-        return res.status(500).json({ message: "Error sending email" });
-      }
-      console.log("Email sent:", info.response);
-      res.status(200).json({ message: "Reset password email sent" });
     });
+
+    console.log(`Password reset email sent to ${email}`);
+    res.status(200).json({ message: "Reset password email sent" });
   } catch (error) {
     console.error("Forgot password error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Error sending email. Please try again." });
   }
 });
 
