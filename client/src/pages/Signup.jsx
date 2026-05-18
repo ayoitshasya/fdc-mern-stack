@@ -35,6 +35,12 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const somaiyaEmailRegex = /^[a-zA-Z0-9._%+-]+@somaiya\.edu$/;
+    if (!somaiyaEmailRegex.test(formData.email)) {
+      alert("Only @somaiya.edu email addresses are allowed.");
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:4000/auth/register", {
         method: "POST",
