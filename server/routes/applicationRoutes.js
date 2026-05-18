@@ -122,7 +122,7 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
                 return res.status(404).json({ message: "User not found" });
             }
         
-            const applications = await applicationModel.find({ submitted_by: currentUser._id });
+            const applications = await applicationModel.find({ submitted_by: currentUser._id }).sort({ createdAt: -1 });
             return res.status(200).json({ applications });
         }
 
@@ -151,7 +151,8 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
                 $match: {
                   "submitted_by.department": currentUser.department
                 }
-              }
+              },
+              { $sort: { createdAt: -1 } }
             ]);
             
 
@@ -161,8 +162,8 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
 
             const applications = await applicationModel.find({
                 status: { $in: ["approved-by-hod", "rejected-by-fdc", "approved-by-fdc"] }
-            });
-            
+            }).sort({ createdAt: -1 });
+
             return res.status(200).json({ applications });
         }
     } catch (error) {

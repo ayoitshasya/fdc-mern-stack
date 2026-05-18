@@ -86,7 +86,7 @@ router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
                 return res.status(404).json({ message: "User not found" });
             }
         
-            const forms = await reimbursementModel.find({ submitted_by: currentUser._id });
+            const forms = await reimbursementModel.find({ submitted_by: currentUser._id }).sort({ createdAt: -1 });
             return res.status(200).json({ forms });
         }
 
@@ -99,7 +99,8 @@ router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
             const forms = await reimbursementModel.find({
                 status: { $in: ["pending", "rejected-by-hod", "approved-by-hod", "approved-by-fdc", "rejected-by-fdc"] }
             })
-            .populate("submitted_by") // populate to access department
+            .populate("submitted_by")
+            .sort({ createdAt: -1 })
             .then(apps =>
                 apps.filter(app => app.submitted_by.department === currentUser.department)
             );
@@ -109,8 +110,8 @@ router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
 
             const forms = await reimbursementModel.find({
                 status: { $in: ["approved-by-hod", "rejected-by-fdc", "approved-by-fdc"] }
-            });
-            
+            }).sort({ createdAt: -1 });
+
             return res.status(200).json({ forms });
         }
         else{
