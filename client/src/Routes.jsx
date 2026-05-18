@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import ApplicationStatus from './pages/Application/ApplicationStatus'
 import Application1 from './pages/Application/Application1'
 import Application2 from './pages/Application/Application2'
@@ -42,6 +43,7 @@ function AppRoutes(){
                     ) : (
                     <>
                         <Route path='/' element={<Home />} />
+                        <Route path="/profile" element={<Profile />} />
                         <Route path="/fdc-application/step-1" element={<Application1 />} />
                         <Route path="/fdc-application/step-2" element={<Application2 />} />
                         <Route path="/fdc-application/step-3" element={<Application3 />} />

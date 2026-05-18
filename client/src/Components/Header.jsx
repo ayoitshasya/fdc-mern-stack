@@ -50,7 +50,7 @@ function Header() {
         </h1>
       </div>
       <div className="h-full flex items-center gap-4">
-        <button className="flex items-center gap-2 border rounded-4xl p-2 border-[#6F6F6F] cursor-pointer">
+        <button onClick={() => navigate("/profile")} className="flex items-center gap-2 border rounded-4xl p-2 border-[#6F6F6F] cursor-pointer">
           <img src={profileUser.profilePicture || "/user.png"} className="h-6 w-6 rounded-full object-cover" />
           <span className="text-[1rem] font-light font-inter mr-1">
             Profile

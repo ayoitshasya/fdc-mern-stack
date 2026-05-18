@@ -4,14 +4,17 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import dotenv from "dotenv";
-import User from "../models/User.js"; 
+import multer from "multer";
+import User from "../models/User.js";
 import jwt from 'jsonwebtoken'
 import authenticateToken from "../middlewares/authenticateToken.js";
 import userModel from "../models/User.js";
+import { saveTempFile, deleteFile, uploadFile } from "../utils/upload.js";
 
 dotenv.config();
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 
 router.get('/check-auth', authenticateToken, async (req, res) => {
@@ -115,6 +118,30 @@ router.get("/profile", authenticateToken, async (req, res) => {
   res.json({ fname, lname, email, department, designation, date_of_appointment, present_appointment, e_id: userData.e_id, user_type, profilePicture });
 
 })
+
+router.put("/profile/picture", authenticateToken, upload.single("profilePicture"), async (req, res) => {
+  try {
+    const e_id = req.user.e_id;
+    if (!req.file) return res.status(400).json({ message: "No image file provided." });
+
+    const timestamp = Date.now();
+    const ext = req.file.originalname.split(".").pop();
+    const tempPath = await saveTempFile(req.file.buffer, `${timestamp}_profile.${ext}`);
+    const imageUrl = await uploadFile(tempPath, "fdc/profile_pictures", "image");
+    await deleteFile(tempPath);
+
+    const user = await User.findOneAndUpdate(
+      { e_id },
+      { profilePicture: imageUrl },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Profile picture updated.", profilePicture: user.profilePicture });
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 router.post("/logout", (req, res) => {
   res.clearCookie("token", {
