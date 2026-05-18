@@ -3,6 +3,7 @@ import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFormContext } from "../../context/FormContext";
+import toast from "react-hot-toast";
 
 function Reimbursement2() {
   const { formReady, updateFormData, getFormData } = useFormContext();
@@ -34,7 +35,7 @@ function Reimbursement2() {
 
   const handleNext = (e) => {
     if (!selectedAppId) {
-      alert("Please select an approved application to proceed.");
+      toast.error("Please select an approved application to proceed.");
       return;
     }
 

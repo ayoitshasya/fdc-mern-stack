@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../../Components/Header'
 import { useParams, useNavigate } from 'react-router'
+import toast from 'react-hot-toast'
 
 function ReimbursementHOD() {
   const {id} = useParams();
@@ -17,7 +18,7 @@ function ReimbursementHOD() {
     try {
       setLoading(true);
       if(!isChecked || reason === ""){
-        alert("Enter All Required Fields.")
+        toast.error("Enter All Required Fields.")
         setLoading(false)
         return;
       }
@@ -50,7 +51,7 @@ function ReimbursementHOD() {
         setLoading(false);
         if (!response.ok) {
           console.error("Fetch failed with status:", response.status);
-          alert("Error reviewing form");
+          toast.error("Error reviewing form");
           return;
         }
         else{
@@ -61,7 +62,7 @@ function ReimbursementHOD() {
       
     } catch (err) {
       console.error("Error in fetchReimbursement:", err);
-      alert("Error reviewing reimbursement form");
+      toast.error("Error reviewing reimbursement form");
     }
   }
 

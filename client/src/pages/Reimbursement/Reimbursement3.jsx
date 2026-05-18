@@ -3,6 +3,7 @@ import Header from "../../Components/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../../context/FormContext";
+import toast from "react-hot-toast";
 
 function Reimbursement3() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ function Reimbursement3() {
 
   const handleNext = () => {
     if (!isChecked) {
-      alert("Please confirm the details by checking the box.");
+      toast.error("Please confirm the details by checking the box.");
       return;
     }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ function Signup() {
 
     const somaiyaEmailRegex = /^[a-zA-Z0-9._%+-]+@somaiya\.edu$/;
     if (!somaiyaEmailRegex.test(formData.email)) {
-      alert("Only @somaiya.edu email addresses are allowed.");
+      toast.error("Only @somaiya.edu email addresses are allowed.");
       return;
     }
 
@@ -51,14 +52,14 @@ function Signup() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Registration successful!");
+        toast.success("Registration successful!");
         navigate("/");
       } else {
-        alert(data.message || "Registration failed");
+        toast.error(data.message || "Registration failed");
       }
     } catch (error) {
       console.error("Registration error:", error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function ReimbursementFDC() {
   const navigate = useNavigate();
@@ -141,7 +142,7 @@ function ReimbursementFDC() {
     try {
       setSubmitLoading(true);
       if(!isChecked){
-        alert("Enter All Required Fields.")
+        toast.error("Enter All Required Fields.")
         setSubmitLoading(false)
         return;
       }
@@ -166,7 +167,7 @@ function ReimbursementFDC() {
         setSubmitLoading(false);
         if (!response.ok) {
           console.error("Fetch failed with status:", response.status);
-          alert("Error reviewing form");
+          toast.error("Error reviewing form");
           return;
         }
         else{
@@ -177,7 +178,7 @@ function ReimbursementFDC() {
       
     } catch (err) {
       console.error("Error in fetchReimbursement:", err);
-      alert("Error reviewing reimbursement form");
+      toast.error("Error reviewing reimbursement form");
     }
   }
 

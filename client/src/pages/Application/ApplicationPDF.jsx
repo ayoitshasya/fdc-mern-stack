@@ -3,6 +3,7 @@ import Header from '../../Components/Header';
 import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function ApplicationPDF() {
     const {  getFormData, resetFormData } = useFormContext();
@@ -63,11 +64,11 @@ const academicYear =
           );
       
           resetFormData("fdcApplication");
-          alert("Application submitted successfully!");
+          toast.success("Application submitted successfully!");
           navigate("/");
         } catch (err) {
           console.error("Submission error:", err);
-          alert("Something went wrong while submitting the application.");
+          toast.error("Something went wrong while submitting the application.");
         }finally {
           setIsSubmitting(false);
         }
@@ -80,7 +81,7 @@ const academicYear =
         const printWindow = window.open("", "_blank", "width=800,height=600");
       
         if (!printWindow) {
-          alert("Popup blocked! Please allow popups for this website.");
+          toast.error("Popup blocked! Please allow popups for this website.");
           return;
         }
       

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../../Components/Header';
 import { useParams, useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
 function ApplicationFDC() {
   const { id } = useParams();
@@ -28,7 +29,7 @@ function ApplicationFDC() {
         amountSanctioned === '' ||
         odSanctioned === ''
       ) {
-        alert('Enter all required fields.');
+        toast.error('Enter all required fields.');
         setLoading(false);
         return;
       }
@@ -67,7 +68,7 @@ function ApplicationFDC() {
 
       if (!response.ok) {
         console.error('Fetch failed with status:', response.status);
-        alert('Error reviewing application');
+        toast.error('Error reviewing application');
         return;
       }
 
@@ -75,7 +76,7 @@ function ApplicationFDC() {
       navigate('/application/Status');
     } catch (err) {
       console.error('Error in fetchApplication:', err);
-      alert('Error reviewing application');
+      toast.error('Error reviewing application');
       setLoading(false);
     }
   };

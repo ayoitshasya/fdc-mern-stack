@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react';
 import AppRoutes from './Routes.jsx'
 import { useUser } from './context/UserContext.jsx'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   const { user, loggedIn, loading, setUser, setLoggedIn, setLoading } = useUser();
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <div className='h-screen flex flex-col'>
         <div  className='h-6 bg-[#B7202E] w-full text-[#B7202E]'>.</div>
         <div className='bg-[url(/campus.jpg)] bg-cover w-full flex-1'>

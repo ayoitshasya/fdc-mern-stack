@@ -3,6 +3,7 @@ import Header from "../../Components/Header";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../../context/FormContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function Reimbursement1() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function Reimbursement1() {
       });
       navigate("/fdc-reimbursement/step-2");
     } else {
-      alert("Please confirm the details by checking the box.");
+      toast.error("Please confirm the details by checking the box.");
     }
   };
 

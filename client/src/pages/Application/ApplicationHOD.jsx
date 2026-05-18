@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../../Components/Header'
 import { useParams, useNavigate } from 'react-router'
+import toast from 'react-hot-toast'
 
 function ApplicationHOD() {
   const {id} = useParams();
@@ -17,7 +18,7 @@ function ApplicationHOD() {
     try {
       setLoading(true);
       if(recommended === "" || !isChecked || !loadChecked || !brochureChecked || reason === ""){
-        alert("Enter All Required Fields.")
+        toast.error("Enter All Required Fields.")
         setLoading(false)
         return;
       }
@@ -51,7 +52,7 @@ function ApplicationHOD() {
         setLoading(false);
         if (!response.ok) {
           console.error("Fetch failed with status:", response.status);
-          alert("Error reviewing application");
+          toast.error("Error reviewing application");
           return;
         }
         else{
@@ -62,7 +63,7 @@ function ApplicationHOD() {
       
     } catch (err) {
       console.error("Error in fetchApplication:", err);
-      alert("Error reviewing application");
+      toast.error("Error reviewing application");
     }
   }
 

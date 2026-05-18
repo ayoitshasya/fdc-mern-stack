@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../Components/Header';
 import { useNavigate, useParams } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 
 function ApplicationPDF_FDC() {
@@ -61,7 +62,7 @@ const academicYear =
         const printWindow = window.open("", "_blank", "width=800,height=600");
       
         if (!printWindow) {
-          alert("Popup blocked! Please allow popups for this website.");
+          toast.error("Popup blocked! Please allow popups for this website.");
           return;
         }
       

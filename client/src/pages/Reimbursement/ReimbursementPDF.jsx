@@ -3,6 +3,7 @@ import Header from '../../Components/Header';
 import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function ReimbursementPDF() {
     const {  getFormData, resetFormData } = useFormContext();
@@ -29,7 +30,7 @@ const academicYear =
         const printWindow = window.open("", "_blank", "width=800,height=600");
       
         if (!printWindow) {
-          alert("Popup blocked! Please allow popups for this website.");
+          toast.error("Popup blocked! Please allow popups for this website.");
           return;
         }
       
@@ -103,13 +104,13 @@ const academicYear =
                 headers: { "Content-Type": "multipart/form-data", }, 
             }); 
             resetFormData("fdcReimbursement");
-            alert("Application submitted successfully!"); 
-            navigate("/"); 
-        } 
-        
-        catch (error) { 
-            console.error("Submission error:", error); 
-            alert("Something went wrong while submitting the form. Please try again."); 
+            toast.success("Reimbursement submitted successfully!");
+            navigate("/");
+        }
+
+        catch (error) {
+            console.error("Submission error:", error);
+            toast.error("Something went wrong while submitting the form. Please try again.");
         }finally {
             setIsSubmitting(false);
         }};
