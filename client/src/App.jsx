@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import AppRoutes from './Routes.jsx'
 import { useUser } from './context/UserContext.jsx'
 import { Toaster } from 'react-hot-toast'
+import { API_BASE } from './config'
 
 function App() {
   const { user, loggedIn, loading, setUser, setLoggedIn, setLoading } = useUser();
@@ -11,7 +12,7 @@ function App() {
     const checkLogin = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:4000/auth/check-auth", {
+        const res = await fetch(`${API_BASE}/auth/check-auth`, {
           method: 'GET',
           credentials: 'include',
         });

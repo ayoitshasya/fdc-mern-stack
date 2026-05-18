@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Header from '../../Components/Header'
 import { useParams, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
+import { API_BASE } from '../../config'
 
 function ReimbursementHOD() {
   const {id} = useParams();
@@ -38,7 +39,7 @@ function ReimbursementHOD() {
           HOD_reason: reason
         });
         
-        const response = await fetch('http://localhost:4000/reimbursement/reimbursement-review', {
+        const response = await fetch(`${API_BASE}/reimbursement/reimbursement-review`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -55,6 +56,7 @@ function ReimbursementHOD() {
           return;
         }
         else{
+          toast.success("Reimbursement reviewed successfully.");
           navigate('/reimbursement/Status')
         }
         

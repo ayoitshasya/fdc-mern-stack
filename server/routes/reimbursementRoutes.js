@@ -106,7 +106,7 @@ router.get("/fetch-reimbursement-forms", authenticateToken, async(req, res) => {
             );
             return res.status(200).json({ forms });
         }
-        else if(userType == "fdc"){
+        else if(userType == "fdc" || userType == "fdc-coordinator"){
 
             const forms = await reimbursementModel.find({
                 status: { $in: ["approved-by-hod", "rejected-by-fdc", "approved-by-fdc"] }
@@ -136,7 +136,7 @@ router.post('/reimbursement-review', authenticateToken, async(req, res) =>{
           rejectStatus = "rejected-by-hod";
         }
 
-        else if(userType == "fdc"){
+        else if(userType == "fdc" || userType == "fdc-coordinator"){
           approveStatus = "approved-by-fdc";
           rejectStatus = "rejected-by-fdc";
         }
@@ -205,14 +205,14 @@ router.post("/fetch-reimbursement-by-id", authenticateToken, async(req, res) => 
     const reimbursement_id = req.body.reimbursement_id;
     const form = await reimbursementModel.findById(reimbursement_id).populate("submitted_by")
 
-    if(userType == "hod" || userType=="fdc"){
-      
+    if(userType == "hod" || userType=="fdc" || userType=="fdc-coordinator"){
+
       return res.status(200).json(form)
     }
     else{
       const e_id = req.user.e_id;
       const currentUser = await userModel.findOne({ e_id });
-      if(application.submitted_by._id.equals(currentUser._id)){
+      if(form.submitted_by._id.equals(currentUser._id)){
         return res.status(200).json(form)
       }
       return res.status(403).json({ message: "Unauthorised" });

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../Components/Header";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { API_BASE } from "../config";
 
 function Profile() {
   const [profile, setProfile] = useState(null);
@@ -12,7 +13,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/auth/profile", {
+        const res = await axios.get(`${API_BASE}/auth/profile`, {
           withCredentials: true,
         });
         setProfile(res.data);
@@ -49,7 +50,7 @@ function Profile() {
     const form = new FormData();
     form.append("profilePicture", file);
     try {
-      const res = await axios.put("http://localhost:4000/auth/profile/picture", form, {
+      const res = await axios.put(`${API_BASE}/auth/profile/picture`, form, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });

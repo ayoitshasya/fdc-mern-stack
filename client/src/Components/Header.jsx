@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
 import { useFormContext } from "../context/FormContext";
+import { API_BASE } from "../config";
 
 function Header() {
   const { resetFormData } = useFormContext();
@@ -13,7 +14,7 @@ function Header() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/auth/profile", {
+        const res = await axios.get(`${API_BASE}/auth/profile`, {
           withCredentials: true,
         });
         const { fname, lname, profilePicture } = res.data;
@@ -29,7 +30,7 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:4000/auth/logout", {}, { withCredentials: true });
+      await axios.post(`${API_BASE}/auth/logout`, {}, { withCredentials: true });
       setUser();
       setLoading(false);
       setLoggedIn(false);

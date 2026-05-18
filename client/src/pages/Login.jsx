@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
+import { API_BASE } from "../config";
 
 function Login() {
 
@@ -24,7 +25,7 @@ function Login() {
     setError("");
     try {
       const res = await axios.post(
-        "http://localhost:4000/auth/login",
+        `${API_BASE}/auth/login`,
         formData,
         {
           withCredentials: true,
@@ -103,7 +104,7 @@ function Login() {
           <span className="text-[#797979]">OR</span>
           <button
             onClick={() =>
-              (window.location.href = "http://localhost:4000/auth/google-login")
+              (window.location.href = `${API_BASE}/auth/google-login`)
             }
             className="flex items-center gap-2 text-[#797979] border border-[#777777] text-[1rem] rounded-4xl py-2 px-4 cursor-pointer"
           >

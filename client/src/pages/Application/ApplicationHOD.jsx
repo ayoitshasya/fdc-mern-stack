@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Header from '../../Components/Header'
 import { useParams, useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
+import { API_BASE } from '../../config'
 
 function ApplicationHOD() {
   const {id} = useParams();
@@ -39,7 +40,7 @@ function ApplicationHOD() {
           HOD_reason: reason
         });
         
-        const response = await fetch('http://localhost:4000/application/application-review', {
+        const response = await fetch(`${API_BASE}/application/application-review`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -56,6 +57,7 @@ function ApplicationHOD() {
           return;
         }
         else{
+          toast.success("Application reviewed successfully.");
           navigate('/application/Status')
         }
         

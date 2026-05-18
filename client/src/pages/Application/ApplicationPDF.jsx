@@ -4,6 +4,7 @@ import { useFormContext } from "../../context/FormContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { API_BASE } from "../../config";
 
 function ApplicationPDF() {
     const {  getFormData, resetFormData } = useFormContext();
@@ -53,7 +54,7 @@ const academicYear =
       
         try {
           const res = await axios.post(
-            "http://localhost:4000/application/submit-form",
+            `${API_BASE}/application/submit-form`,
             form,
             {
               withCredentials: true,

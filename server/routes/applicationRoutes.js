@@ -92,7 +92,7 @@ router.post("/fetch-application-by-id", authenticateToken, async(req, res) => {
     const application_id = req.body.application_id;
     const application = await applicationModel.findById(application_id).populate("submitted_by")
 
-    if(userType == "hod" || userType=="fdc"){
+    if(userType == "hod" || userType=="fdc" || userType=="fdc-coordinator"){
       console.log(application)
       return res.status(200).json(application)
     }
@@ -158,7 +158,7 @@ router.get("/fetch-applications", authenticateToken, async(req, res) => {
 
             return res.status(200).json({ applications });
         }
-        else if(userType == "fdc"){
+        else if(userType == "fdc" || userType == "fdc-coordinator"){
 
             const applications = await applicationModel.find({
                 status: { $in: ["approved-by-hod", "rejected-by-fdc", "approved-by-fdc"] }
@@ -194,7 +194,7 @@ router.post('/application-review', authenticateToken, async(req, res) =>{
           updateObject.HOD_reason = HOD_reason;
 
         }
-        else if(userType == "fdc"){
+        else if(userType == "fdc" || userType == "fdc-coordinator"){
           approveStatus = "approved-by-fdc";
           rejectStatus = "rejected-by-fdc";
           const { committee_meeting_date, final_remark, amount_sanctioned, od_sanctioned } = req.body;

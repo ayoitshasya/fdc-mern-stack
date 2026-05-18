@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { API_BASE } from "../config";
 
 function Signup() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function Signup() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/auth/register", {
+      const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -211,7 +212,7 @@ function Signup() {
           <span className="text-[#797979] text-sm">OR</span>
           <button
             onClick={() =>
-              (window.location.href = "http://localhost:4000/auth/google-login")
+              (window.location.href = `${API_BASE}/auth/google-login`)
             }
             className="flex items-center gap-2 text-[#797979] border border-[#777777] text-[0.9rem] rounded-4xl py-2 px-4 cursor-pointer"
           >

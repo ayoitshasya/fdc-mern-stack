@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFormContext } from "../../context/FormContext";
 import toast from "react-hot-toast";
+import { API_BASE } from "../../config";
 
 function Reimbursement2() {
   const { formReady, updateFormData, getFormData } = useFormContext();
@@ -19,7 +20,7 @@ function Reimbursement2() {
   useEffect(() => {
     const fetchApprovedApplications = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/application/fetch-applications", {
+        const res = await axios.get(`${API_BASE}/application/fetch-applications`, {
           withCredentials: true,
         });
         console.log(res.data.applications)

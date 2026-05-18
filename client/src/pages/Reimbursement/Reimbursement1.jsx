@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../../context/FormContext";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { API_BASE } from "../../config";
 
 function Reimbursement1() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function Reimbursement1() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/auth/profile", {
+        const res = await axios.get(`${API_BASE}/auth/profile`, {
           withCredentials: true,
         });
 

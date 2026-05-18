@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { API_BASE } from "../../config";
 
 function ReimbursementFDC() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function ReimbursementFDC() {
       setFormError("");
       try {
         const response = await fetch(
-          "http://localhost:4000/reimbursement/fetch-reimbursement-by-id",
+          `${API_BASE}/reimbursement/fetch-reimbursement-by-id`,
           {
             method: "POST",
             credentials: "include",
@@ -87,7 +88,7 @@ function ReimbursementFDC() {
       setAppError("");
       try {
         const response = await fetch(
-          "http://localhost:4000/application/fetch-application-by-id",
+          `${API_BASE}/application/fetch-application-by-id`,
           {
             method: "POST",
             credentials: "include",
@@ -154,7 +155,7 @@ function ReimbursementFDC() {
           status: stat,
         });
         
-        const response = await fetch('http://localhost:4000/reimbursement/reimbursement-review', {
+        const response = await fetch(`${API_BASE}/reimbursement/reimbursement-review`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -171,6 +172,7 @@ function ReimbursementFDC() {
           return;
         }
         else{
+          toast.success("Reimbursement approved successfully.");
           navigate('/reimbursement/Status')
         }
         
@@ -303,7 +305,7 @@ function ReimbursementFDC() {
             <div className='flex justify-center gap-4 mt-2'>
               <button
                 type="button"
-                onClick={() => navigate(" ")} // ye route replace karna FDC status page se
+                onClick={() => navigate("/reimbursement/Status")}
                 className="rounded-4xl bg-gray-400 text-white px-40 py-2 cursor-pointer"
               >
                 Back

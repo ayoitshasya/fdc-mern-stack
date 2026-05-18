@@ -3,6 +3,7 @@ import Header from '../../Components/Header';
 import { useNavigate } from 'react-router';
 import { useUser } from '../../context/UserContext';
 import { useFormContext } from '../../context/FormContext';
+import { API_BASE } from '../../config';
 
 function ApplicationStatus() {
   const [applications, setApplications] = useState([]);
@@ -23,7 +24,7 @@ function ApplicationStatus() {
       setApplicationsLoading(true)
       try {
 
-        const response = await fetch('http://localhost:4000/application/fetch-applications', {
+        const response = await fetch(`${API_BASE}/application/fetch-applications`, {
           method: 'GET',
           credentials: 'include',
         });

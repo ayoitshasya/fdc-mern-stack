@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
 import { useNavigate } from 'react-router';
 import { useUser } from '../../context/UserContext';
+import { API_BASE } from '../../config';
 
 function ReimbursementStatusHOD() {
   const [reimbursements, setReimbursements] = useState([]);
@@ -36,7 +37,7 @@ function ReimbursementStatusHOD() {
     const fetchReimbursements = async () => {
       setReimbursementsLoading(true);
       try {
-        const response = await fetch('http://localhost:4000/reimbursement/fetch-reimbursement-forms', {
+        const response = await fetch(`${API_BASE}/reimbursement/fetch-reimbursement-forms`, {
           method: 'GET',
           credentials: 'include',
         });

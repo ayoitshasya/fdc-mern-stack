@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from '../../Components/Header';
 import { useParams, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
+import { API_BASE } from '../../config';
 
 function ApplicationFDC() {
   const { id } = useParams();
@@ -48,7 +49,7 @@ function ApplicationFDC() {
         od_sanctioned: odSanctioned,
       });
 
-      const response = await fetch('http://localhost:4000/application/application-review', {
+      const response = await fetch(`${API_BASE}/application/application-review`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -72,7 +73,7 @@ function ApplicationFDC() {
         return;
       }
 
-      // success
+      toast.success("Application reviewed successfully.");
       navigate('/application/Status');
     } catch (err) {
       console.error('Error in fetchApplication:', err);

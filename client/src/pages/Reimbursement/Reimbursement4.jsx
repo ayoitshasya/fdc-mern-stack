@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../../context/FormContext";
 import toast from "react-hot-toast";
+import { API_BASE } from "../../config";
 
 function Reimbursement4() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function Reimbursement4() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/auth/profile", {
+        const res = await axios.get(`${API_BASE}/auth/profile`, {
           withCredentials: true,
         });
 
@@ -40,7 +41,7 @@ function Reimbursement4() {
   useEffect(() => {
     const fetchFdcSummary = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/fdc/summary", {
+        const res = await axios.get(`${API_BASE}/fdc/summary`, {
           withCredentials: true,
         });
         setFdcData({

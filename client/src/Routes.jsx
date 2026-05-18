@@ -71,7 +71,7 @@ function AppRoutes(){
                         </>
                         )}
 
-                        {(user.user_type === "fdc-convenor" || user.user_type === "fdc") && (
+                        {(user.user_type === "fdc-coordinator" || user.user_type === "fdc") && (
                         <>
                             <Route path="/application/Status" element={<ApplicationStatusFDC />} />
                             <Route path="/application/review/:id" element={<ApplicationFDC />} />

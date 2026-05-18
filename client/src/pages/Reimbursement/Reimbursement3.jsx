@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../../context/FormContext";
 import toast from "react-hot-toast";
+import { API_BASE } from "../../config";
 
 function Reimbursement3() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function Reimbursement3() {
         if (!formData?.application_id) return;
 
         const res = await axios.post(
-          "http://localhost:4000/application/fetch-application-by-id",
+          `${API_BASE}/application/fetch-application-by-id`,
           { application_id: formData.application_id },
           { withCredentials: true }
         );

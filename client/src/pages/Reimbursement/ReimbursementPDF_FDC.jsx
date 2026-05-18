@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../Components/Header';
 import { useNavigate, useParams } from "react-router-dom";
 import toast from 'react-hot-toast';
+import { API_BASE } from "../../config";
 
 
 function ReimbursementPDF_FDC() {
@@ -26,7 +27,7 @@ const academicYear =
         const fetchReimbursement = async () => {
           try {
             console.log("Sending fetch request with ID:", id);
-            const response = await fetch('http://localhost:4000/reimbursement/fetch-reimbursement-by-id', {
+            const response = await fetch(`${API_BASE}/reimbursement/fetch-reimbursement-by-id`, {
               method: 'POST',
               credentials: 'include',
               headers: {
@@ -61,7 +62,7 @@ const academicYear =
           try {
             console.log("Fetching application using application_id:", form.application_id);
       
-            const response = await fetch('http://localhost:4000/application/fetch-application-by-id', {
+            const response = await fetch(`${API_BASE}/application/fetch-application-by-id`, {
               method: 'POST',
               credentials: 'include',
               headers: {
