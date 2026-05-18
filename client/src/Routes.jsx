@@ -26,6 +26,8 @@ import ApplicationPDF_HOD from './pages/Application/ApplicationPDF_HOD'
 import ApplicationStatusFDC from './pages/Application/ApplicationStatusFDC'
 import { useUser } from './context/UserContext'
 import ApplicationPDF_FDC from './pages/Application/ApplicationPDF_FDC'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import ReimbursementStatusFDC from './pages/Reimbursement/ReimbursementStatusFDC'
 import ReimbursementPDF_FDC from './pages/Reimbursement/ReimbursementPDF_FDC'
 
@@ -38,8 +40,10 @@ function AppRoutes(){
                     <>
                         <Route path='/' element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password/:token" element={<ResetPassword />} />
                         <Route path='*' element={<Navigate to='/' />} />
-                    </> 
+                    </>
                     ) : (
                     <>
                         <Route path='/' element={<Home />} />

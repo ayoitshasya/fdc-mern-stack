@@ -252,17 +252,17 @@ router.post("/forgot-password", async (req, res) => {
     await user.save();
 
     const mailOptions = {
-      from: `"MERN Auth App" <${process.env.EMAIL_USERNAME}>`,
+      from: `"KJSCE FDC Portal" <${process.env.EMAIL_USERNAME}>`,
       to: email,
-      subject: "Password Reset Verification",
+      subject: "Password Reset Request — KJSCE FDC Portal",
       html: `
         <p>Hi there,</p><br>
-        <p>We received a request to reset your password. Click the link below:</p>
-        <p><a href="http://localhost:3000/ResetPw/${resetToken}">Reset Password</a></p><br>
+        <p>We received a request to reset the password for your KJSCE FDC Portal account. Click the link below to proceed:</p>
+        <p><a href="http://localhost:5173/reset-password/${resetToken}">Reset Password</a></p><br>
         <p>This link expires in 1 hour.</p>
-        <p>If you didn’t request this, ignore this email.</p><br>
-        <p>Best,</p>
-        <p>MERN Auth App Team</p>
+        <p>If you didn’t request this, you can safely ignore this email.</p><br>
+        <p>Regards,</p>
+        <p>KJSCE FDC Portal Team</p>
       `,
     };
 
