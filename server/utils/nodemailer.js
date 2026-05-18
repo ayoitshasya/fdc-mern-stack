@@ -34,6 +34,14 @@ export async function sendStatusMail(applicationId, status, userId) {
         ? `approved by ${roleDisplay}`
         : `rejected by ${roleDisplay}`;
   
+      const remarkSection = application.final_recommendation
+        ? `<p><b>FDC Remarks:</b> ${application.final_recommendation}</p>`
+        : "";
+
+      const hodRemarkSection = application.HOD_reason
+        ? `<p><b>HOD Remarks:</b> ${application.HOD_reason}</p>`
+        : "";
+
       const mailOptions = {
         from: `"FDC Portal" <${process.env.MAIL_USER}>`,
         to: user.email,
@@ -43,6 +51,8 @@ export async function sendStatusMail(applicationId, status, userId) {
           <p>Your application for <b>${application.purpose}</b> organised by ${application.org_institution} has been <b>${statusText}</b>.</p>
           <p><b>Application ID:</b> ${application._id}</p>
           <p><b>Status:</b> ${status}</p>
+          ${hodRemarkSection}
+          ${remarkSection}
           <p>Regards,<br/>KJSSE FDC Admin</p>
         `,
       };
