@@ -76,12 +76,13 @@ function ApplicationStatus() {
           {/* Table Headers */}
           
 
-          <div className={`grid grid-cols-5 font-semibold border-b py-2 text-sm text-[#3D3D3D]`}>
+          <div className={`grid grid-cols-6 font-semibold border-b py-2 text-sm text-[#3D3D3D]`}>
             <span>Application ID</span>
             <span>Name</span>
             <span>Purpose</span>
             <span>Status</span>
             <span>Submitted</span>
+            <span>Action</span>
           </div>
 
 
@@ -91,12 +92,22 @@ function ApplicationStatus() {
 
             <>
               {activeList.map((app) => (
-                <div key={app.id} className={`grid grid-cols-5 border-b py-2 text-sm text-[#3D3D3D]`}>
-                  <span>{app._id}</span>
+                <div key={app._id} className={`grid grid-cols-6 border-b py-2 text-sm text-[#3D3D3D] items-center`}>
+                  <span className="truncate">{app._id}</span>
                   <span>{user?.fname} {user?.lname}</span>
                   <span>{app.purpose}</span>
                   <span>{app.status.replace(/-/g, " ")}</span>
                   <span>{formatDate(app.createdAt)}</span>
+                  <span>
+                    {app.status === "approved-by-fdc" && (
+                      <button
+                        onClick={() => { resetFormData("fdcReimbursement"); navigate("/fdc-reimbursement/step-1"); }}
+                        className="text-xs bg-[#B7202E] text-white px-2 py-1 rounded-full hover:bg-[#d23646]"
+                      >
+                        Apply Reimbursement
+                      </button>
+                    )}
+                  </span>
                 </div>
               ))}
 
