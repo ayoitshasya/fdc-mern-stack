@@ -235,6 +235,12 @@ const academicYear =
 
         <div className="mt-2 mb-2 no-print flex gap-4 justify-center">
                     <button
+                    className="bg-gray-400 text-white px-6 py-2 rounded-4xl cursor-pointer"
+                    onClick={() => navigate("/fdc-reimbursement/step-4")}
+                    >
+                    Back
+                    </button>
+                    <button
                     className="bg-[#B7202E] text-white px-6 py-2 rounded-4xl cursor-pointer"
                     onClick={handlePrint}
                     >
